@@ -8,246 +8,182 @@ import os
 import sys
 import tensorflow as tf
 
-FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_string('FILTER_COLLECTION', 'filter',
-                           """filter collection.""")
+import torch
+import torch.nn as nn
+
+# Equivalent of FLAGS in PyTorch using argparse
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--FILTER_COLLECTION', default='filter', help='filter collection')
+args = parser.parse_args()
 
 # =============================================================
 # =============================================================
-def _variable_init(name, shape, wd, initializer = tf.contrib.layers.variance_scaling_initializer(), trainable = True, collections=None):
+
+def _variable_init(name, shape, wd, initializer = nn.init.xavier_uniform_, trainable = True):
     """Helper to create an initialized Variable with weight decay.
 
     Args:
         name: name of the variable
         shape: list of ints
-        stddev: standard deviation of a truncated Gaussian
         wd: add L2Loss weight decay multiplied by this float. If None, weight
             decay is not added for this Variable.
     Returns:
         Variable Tensor
     """
-
-    if collections is None:
-        collections = [tf.GraphKeys.GLOBAL_VARIABLES]
-    else:
-        collections = [tf.GraphKeys.GLOBAL_VARIABLES]+collections
-
-    with tf.device('/cpu:0'):
-        var = tf.get_variable(name, shape, initializer=initializer, dtype=tf.float32, trainable=trainable, collections=collections)
+    var = torch.empty(shape)
+    initializer(var)
+    var = nn.Parameter(var, requires_grad=trainable)
 
     # Weight decay
     if wd is not None:
-        weight_decay = tf.multiply(tf.nn.l2_loss(var), wd, name='weight_loss')
-        tf.add_to_collection('losses', weight_decay)
+        weight_decay = wd * torch.sum(var ** 2) / 2
 
-    return var
-
-
+    return var, weight_decay
 # =============================================================
 # =============================================================
-def inference(x, list_hidden_nodes, num_class, wd = 1e-4, maxout_k = 2, MLP_trainable = True, feature_nonlinearity='abs'):
-    """Build the model.
-        MLP with maxout activation units
-    Args:
-        x: data holder.
-        list_hidden_nodes: number of nodes for each layer. 1D array [num_layer]
-        num_class: number of classes of MLR
-        wd: (option) parameter of weight decay (not for bias)
-        maxout_k: (option) number of affine feature maps
-        MLP_trainable: (option) If false, fix MLP layers
-        feature_nonlinearity: (option) Nonlinearity of the last hidden layer (feature value)
-    Returns:
-        logits: logits tensor:
-        feat: feature tensor
-    """
-    print("Building model...")
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
-    # Maxout --------------------------------------------------
-    def maxout(y, k):
-        #   y: data tensor
-        #   k: number of affine feature maps
-        input_shape = y.get_shape().as_list()
-        ndim = len(input_shape)
-        ch = input_shape[-1]
-        assert ndim == 4 or ndim == 2
-        assert ch is not None and ch % k == 0
-        if ndim == 4:
-            y = tf.reshape(y, [-1, input_shape[1], input_shape[2], ch / k, k])
-        else:
-            y = tf.reshape(y, [-1, int(ch / k), k])
-        y = tf.reduce_max(y, ndim)
-        return y
+class Maxout(nn.Module):
+    def __init__(self, num_pieces):
+        super(Maxout, self).__init__()
+        self.num_pieces = num_pieces
 
-    num_layer = len(list_hidden_nodes)
+    def forward(self, x):
+        assert x.shape[1] % self.num_pieces == 0  # Number of in_features should be divisible by num_pieces
+        return x.view(*x.shape[:1], x.shape[1] // self.num_pieces, self.num_pieces, *x.shape[2:]).max(dim=2)[0]
 
-    # Hidden layers -------------------------------------------
-    for ln in range(num_layer):
-        with tf.variable_scope('layer'+str(ln+1)) as scope:
-            in_dim = list_hidden_nodes[ln-1] if ln > 0 else x.get_shape().as_list()[1]
-            out_dim = list_hidden_nodes[ln]
+class MLP(nn.Module):
+    def __init__(self, list_hidden_nodes, num_class, wd=1e-4, maxout_k=2, feature_nonlinearity='abs'):
+        super(MLP, self).__init__()
+        self.list_hidden_nodes = list_hidden_nodes
+        self.num_class = num_class
+        self.wd = wd
+        self.maxout_k = maxout_k
+        self.feature_nonlinearity = feature_nonlinearity
+        self.layers = nn.ModuleList()
 
-            if ln < num_layer - 1: # Increase number of nodes for maxout
-                out_dim = maxout_k * out_dim
+        for i in range(len(list_hidden_nodes)):
+            if i != len(list_hidden_nodes) - 1:  # Not last layer
+                self.layers.append(nn.Linear(list_hidden_nodes[i], list_hidden_nodes[i+1]*maxout_k))
+                self.layers.append(Maxout(maxout_k))
+            else:  # Last layer
+                self.layers.append(nn.Linear(list_hidden_nodes[i], list_hidden_nodes[i+1]))
 
-            # Inner product
-            W = _variable_init('W', [in_dim, out_dim], wd, trainable=MLP_trainable, collections=[FLAGS.FILTER_COLLECTION])
-            b = _variable_init('b', [out_dim], 0, tf.constant_initializer(0.0), trainable=MLP_trainable, collections=[FLAGS.FILTER_COLLECTION])
-            x = tf.nn.xw_plus_b(x, W, b)
+        self.final_layer = nn.Linear(list_hidden_nodes[-1], num_class)
 
-            # Nonlinearity
-            if ln < num_layer-1:
-                x = maxout(x, maxout_k)
-            else: # The last layer (feature value)
-                if feature_nonlinearity == 'abs':
-                    x = tf.abs(x)
-                else:
-                    raise ValueError
-
-            # Add summary
-            tf.summary.histogram('layer'+str(ln+1)+'/activations', x)
-
-    feats = x
-
-    # MLR -----------------------------------------------------
-    with tf.variable_scope('MLR') as scope:
-        in_dim = list_hidden_nodes[-1]
-        out_dim = num_class
-
-        # Inner product
-        W = _variable_init('W', [in_dim, out_dim], wd, collections=[FLAGS.FILTER_COLLECTION])
-        b = _variable_init('b', [out_dim], 0, tf.constant_initializer(0.0), collections=[FLAGS.FILTER_COLLECTION])
-        logits = tf.nn.xw_plus_b(x, W, b)
-
-    return logits, feats
-
-
+    def forward(self, x):
+        for i, layer in enumerate(self.layers):
+            x = layer(x)
+            if i == len(self.layers) - 1 and self.feature_nonlinearity == 'abs':
+                x = torch.abs(x)
+        feats = x
+        logits = self.final_layer(x)
+        return logits, feats
+    
+    
 # =============================================================
 # =============================================================
 def loss(logits, labels):
-    """Add L2Loss to all the trainable variables.
-        Add summary for "Loss" and "Loss/avg".
+    """Calculate cross entropy loss and accuracy.
     Args:
-        logits: logits from inference().
-        labels: labels from distorted_inputs or inputs(). 1-D tensor
-                of shape [batch_size]
+        logits: logits from the model.
+        labels: labels from the data. 1-D tensor of shape [batch_size]
     Returns:
-        Loss tensor of type float.
+        Loss tensor of type float and accuracy.
     """
     # Calculate the average cross entropy loss across the batch.
-    labels = tf.cast(labels, tf.int64)
-    cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(
-        labels=labels, logits=logits, name='cross_entropy_per_example')
-    cross_entropy_mean = tf.reduce_mean(cross_entropy, name='cross_entropy')
-    tf.add_to_collection('losses', cross_entropy_mean)
+    criterion = nn.CrossEntropyLoss()
+    cross_entropy_loss = criterion(logits, labels)
 
     # Calculate accuracy
-    correct_prediction = tf.equal(tf.argmax(logits, 1), labels)
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='acurracy')
+    _, predicted = torch.max(logits.data, 1)
+    correct_prediction = (predicted == labels).sum().item()
+    accuracy = correct_prediction / labels.size(0)
 
-    # The total loss is defined as the cross entropy loss plus all of the weight
-    # decay terms (L2 loss).
-    return tf.add_n(tf.get_collection('losses'), name='total_loss'), accuracy
-
+    return cross_entropy_loss, accuracy
 
 # =============================================================
 # =============================================================
-def _add_loss_summaries(total_loss):
+from torch.utils.tensorboard import SummaryWriter
+
+class MovingAverage():
+    def __init__(self, factor=0.9):
+        self.factor = factor
+        self.raw_data = 0
+        self.average = 0
+
+    def update(self, raw_data):
+        self.raw_data = raw_data
+        self.average = self.factor * self.average + (1 - self.factor) * raw_data
+        return self.average
+
+def add_loss_summaries(total_loss, step, writer, losses, moving_averages):
     """Add summaries for losses in CIFAR-10 model.
         Generates moving average for all losses and associated summaries for
         visualizing the performance of the network.
 
     Args:
         total_loss: total loss from loss().
-    Returns:
-        loss_averages_op: op for generating moving averages of losses.
+        step: current step in training.
+        writer: TensorBoard SummaryWriter.
+        losses: list of other losses.
+        moving_averages: list of MovingAverage objects for each loss.
     """
     # Compute the moving average of all individual losses and the total loss.
-    loss_averages = tf.train.ExponentialMovingAverage(0.9, name='avg')
-    losses = tf.get_collection('losses')
-    loss_averages_op = loss_averages.apply(losses + [total_loss])
+    for i, loss in enumerate(losses + [total_loss]):
+        avg = moving_averages[i].update(loss.item())
 
-    # Attach a scalar summary to all individual losses and the total loss; do the
-    # same for the averaged version of the losses.
-    for l in losses + [total_loss]:
-        # Name each loss as '(raw)' and name the moving average version of the loss
-        # as the original loss name.
-        tf.summary.scalar(l.op.name + ' (raw)', l)
-        tf.summary.scalar(l.op.name, loss_averages.average(l))
-
-    return loss_averages_op
-
+        # Log raw loss and moving average loss
+        writer.add_scalar(losses[i].__class__.__name__ + ' (raw)', loss.item(), step)
+        writer.add_scalar(losses[i].__class__.__name__, avg, step)
 
 # =============================================================
 # =============================================================
-def train(total_loss,
-          accuracy,
-          global_step,
-          initial_learning_rate,
-          momentum,
-          decay_steps,
-          decay_factor,
-          moving_average_decay = 0.9999,
-          moving_average_collections = tf.trainable_variables()):
+import torch
+import torch.optim as optim
+from torch.optim import lr_scheduler
+import wandb
+
+def train(model, total_loss, accuracy, initial_learning_rate, momentum, decay_steps, decay_factor, moving_average_decay=0.9999):
     """Train model.
         Create an optimizer and apply to all trainable variables. Add moving
         average for all trainable variables.
     Args:
+        model: PyTorch model to train.
         total_loss: total loss from loss().
         accuracy: accuracy tensor
-        global_step: integer variable counting the number of training steps processed.
         initial_learning_rate: initial learning rate
-        momentum: momentum parameter (tf.train.MomentumOptimizer)
-        decay_steps: decay steps (tf.train.exponential_decay)
-        decay_factor: decay factor (tf.train.exponential_decay)
+        momentum: momentum parameter
+        decay_steps: decay steps
+        decay_factor: decay factor
         moving_average_decay: (option) moving average decay of variables to be saved
-        moving_average_collections: (option) variables to be saved with those moving averages
     Returns:
-        train_op: op for training.
+        None
     """
+    # Create an optimizer
+    optimizer = optim.SGD(model.parameters(), lr=initial_learning_rate, momentum=momentum)
 
     # Decay the learning rate exponentially based on the number of steps.
-    lr = tf.train.exponential_decay(initial_learning_rate,
-                                  global_step,
-                                  decay_steps,
-                                  decay_factor,
-                                  staircase=True)
-    tf.summary.scalar('learning_rate', lr)
+    scheduler = lr_scheduler.StepLR(optimizer, step_size=decay_steps, gamma=decay_factor)
 
-    # Generate moving averages of all losses and associated summaries.
-    loss_averages_op = _add_loss_summaries(total_loss)
+    # Compute gradients and update model parameters
+    optimizer.zero_grad()
+    total_loss.backward()
+    optimizer.step()
 
-    # Generate moving averages of accuracy and associated summaries.
-    accu_averages = tf.train.ExponentialMovingAverage(0.9, name='avg_accu')
-    accu_averages_op = accu_averages.apply([accuracy])
-    tf.summary.scalar(accuracy.op.name + ' (raw)', accuracy)
-    tf.summary.scalar(accuracy.op.name, accu_averages.average(accuracy))
+    # Update learning rate
+    scheduler.step()
 
-    # Compute gradients.
-    with tf.control_dependencies([loss_averages_op, accu_averages_op]):
-        # opt = tf.train.GradientDescentOptimizer(lr)
-        opt = tf.train.MomentumOptimizer(lr, momentum)
-        grads = opt.compute_gradients(total_loss)
+    # Compute moving averages of total loss and accuracy
+    total_loss_avg = MovingAverage(moving_average_decay)
+    accuracy_avg = MovingAverage(moving_average_decay)
+    total_loss_avg.update(total_loss.item())
+    accuracy_avg.update(accuracy.item())
 
-    # Apply gradients.
-    apply_gradient_op = opt.apply_gradients(grads, global_step=global_step)
-
-    # Add histograms for trainable variables.
-    for var in tf.trainable_variables():
-        tf.summary.histogram(var.op.name, var)
-
-    # Add histograms for gradients.
-    for grad, var in grads:
-        if grad is not None:
-            tf.summary.histogram(var.op.name + '/gradients', grad)
-
-    # Track the moving averages of all trainable variables.
-    variable_averages = tf.train.ExponentialMovingAverage(
-        moving_average_decay, global_step)
-    variables_averages_op = variable_averages.apply(tf.trainable_variables())
-
-    with tf.control_dependencies([apply_gradient_op, variables_averages_op]):
-        train_op = tf.no_op(name='train')
-
-    return train_op, lr
-
-
+    # Log metrics to wandb
+    wandb.log({"total_loss": total_loss.item(), "accuracy": accuracy.item(),
+               "total_loss_avg": total_loss_avg.average, "accuracy_avg": accuracy_avg.average,
+               "learning_rate": scheduler.get_last_lr()[0]})
