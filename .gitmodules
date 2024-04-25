@@ -1,0 +1,3 @@
+[submodule "MNE_SR"]
+	path = MNE_SR
+	url = https://github.com/mahtaao/MNE_SR.git
