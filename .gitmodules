@@ -1,3 +1,6 @@
 [submodule "MNE_SR"]
 	path = MNE_SR
 	url = https://github.com/mahtaao/MNE_SR.git
+[submodule "torch_tcl"]
+	path = submodules/torch_tcl
+	url = https://github.com/poonehmousavi/TCL.git
