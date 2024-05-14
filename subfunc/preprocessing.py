@@ -9,7 +9,7 @@ from subfunc.showdata import *
 
 # ============================================================
 # ============================================================
-def pca(x, num_comp=None, params=None, zerotolerance = 1e-7):
+def pca(x, num_comp=None, params=None, zerotolerance = 1e-10):
     """Apply PCA whitening to data.
     Args:
         x: data. 2D ndarray [num_comp, num_data]

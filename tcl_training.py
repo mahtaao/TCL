@@ -13,7 +13,8 @@ import os
 import pickle
 import shutil
 
-from TCL.tcl_pytorch.custom_dataset import SimulatedDataset
+from tcl_pytorch.custom_dataset import SimulatedDataset
+from tcl_pytorch.custom_dataset import EEGDataset
 from tcl_pytorch.train import train
 import logging
 
@@ -25,13 +26,13 @@ logger = logging.getLogger(__name__)
 
 # Data generation ---------------------------------------------
 random_seed = 0 # random seed
-num_comp = 20 # number of components (dimension)
-num_segment = 8 # number of segments
-num_segmentdata = 512 # number of data-points in each segment
+num_comp = 116 # number of components (dimension)
+num_segment = 5 # number of segments
+num_segmentdata = 500 # number of data-points in each segment
 num_layer = 5 # number of layers of mixing-MLP
 
 # MLP ---------------------------------------------------------
-list_hidden_nodes = [40, 40, 40, 40, 20]
+list_hidden_nodes = [264, 264, 264, 264, 116]
 # list of the number of nodes of each hidden layer of feature-MLP
 # [layer1, layer2, ..., layer(num_layer)]
 
@@ -42,7 +43,7 @@ max_steps = int(7e5) # number of iterations (mini-batches)
 decay_steps = int(5e5) # decay steps (tf.train.exponential_decay)
 max_steps_init = 500
 decay_factor = 0.1 # decay factor (tf.train.exponential_decay)
-batch_size = 512 # mini-batch size
+batch_size = 500 # mini-batch size
 moving_average_decay = 0.999 # moving average decay of variables to be saved
 checkpoint_steps = 1e5 # interval to save checkpoint
 
@@ -77,11 +78,16 @@ logging.basicConfig(format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(messa
                     logging.FileHandler(filename=os.path.join(dir_path,"log.txt"),
                    ),
                     logging.StreamHandler()])
-train_dataset = SimulatedDataset(num_comp=num_comp,
-                                                 num_segment=num_segment,
-                                                 num_segmentdata=num_segmentdata,
-                                                 num_layer=num_layer,
-                                                 random_seed=random_seed)
+# train_dataset = SimulatedDataset(num_comp=num_comp,
+#                                                  num_segment=num_segment,
+#                                                  num_segmentdata=num_segmentdata,
+#                                                  num_layer=num_layer,
+#                                                  random_seed=random_seed)
+
+train_dataset = EEGDataset(root_dir='TCL\data',
+                                        num_segment=num_segment,
+                                        num_segmentdata=num_segmentdata,
+                                        random_seed=random_seed)
 
 
 # Train model (only MLR) --------------------------------------

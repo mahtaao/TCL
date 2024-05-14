@@ -93,12 +93,11 @@ def train(dataset,
 
         if step % 100 == 0:
             num_examples_per_step = batch_size
-            examples_per_sec = num_examples_per_step / duration
-            sec_per_batch = float(duration)
+            # examples_per_sec = num_examples_per_step / duration
+            # sec_per_batch = float(duration)
 
-        logger.info('%s: step %d, lr = %f, loss = %.2f, accuracy = %.2f (%.1f examples/sec; %.3f sec/batch)' %
-                    (datetime.now(), step, optimizer.param_groups[0]['lr'], np.mean(losses), accuracy/i * 100,
-                    examples_per_sec, sec_per_batch))
+        logger.info('%s: step %d, lr = %f, loss = %.2f, accuracy = %.2f' %
+                    (datetime.now(), step, optimizer.param_groups[0]['lr'], np.mean(losses), accuracy/i * 100))
 
             # if step % summary_steps == 0:
             #     # Add summary
