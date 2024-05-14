@@ -13,7 +13,7 @@ import os
 import pickle
 import shutil
 
-from tcl_pytorch.custom_datase import SimulatedDataset
+from TCL.tcl_pytorch.custom_dataset import SimulatedDataset
 from tcl_pytorch.train import train
 import logging
 

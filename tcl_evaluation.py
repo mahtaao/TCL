@@ -14,7 +14,7 @@ from subfunc.preprocessing import pca
 from subfunc.showdata import *
 from sklearn.decomposition import FastICA
 import torch
-from tcl_pytorch.custom_datase import SimulatedDataset
+from TCL.tcl_pytorch.custom_dataset import SimulatedDataset
 from tcl_pytorch.model import TCL,TCL_new
 import torch.utils.data as data
 from sklearn.metrics import confusion_matrix,accuracy_score
