@@ -30,7 +30,7 @@ class SimulatedDataset(data.Dataset):
         return self.sensor.shape[0]
 class EEGDataset(data.Dataset):
     def __init__(self, root_dir,
-                            num_segment = 5,
+                            num_segment = 150,
                             num_segmentdata = 500,
                             random_seed = 0):
         self.sensor, self.source, self.label = load_EEG_data(root_dir,
@@ -39,10 +39,9 @@ class EEGDataset(data.Dataset):
                                                             random_seed = random_seed)
 
         # Preprocessing -----------------------------------------------
-        print('TO pca: ', self.sensor.shape, self.sensor.detach().numpy())
         self.sensor, self.pca_parm = pca(self.sensor.detach().numpy(), num_comp=self.sensor.shape[0])
     def __len__(self):
-        return len(self.sensor)
+        return len(self.label)
 
     def __getitem__(self, idx):
         data_tensor = torch.tensor(self.sensor[:,idx], dtype=torch.float32)

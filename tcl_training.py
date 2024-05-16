@@ -9,12 +9,14 @@
 
 
 
+from datetime import datetime
 import os
 import pickle
 import shutil
 
 from tcl_pytorch.custom_dataset import SimulatedDataset
 from tcl_pytorch.custom_dataset import EEGDataset
+# from TCL import tcl_evaluation
 from tcl_pytorch.train import train
 import logging
 
@@ -27,7 +29,7 @@ logger = logging.getLogger(__name__)
 # Data generation ---------------------------------------------
 random_seed = 0 # random seed
 num_comp = 116 # number of components (dimension)
-num_segment = 5 # number of segments
+num_segment = 150 # number of segments
 num_segmentdata = 500 # number of data-points in each segment
 num_layer = 5 # number of layers of mixing-MLP
 
@@ -41,7 +43,7 @@ initial_learning_rate = 0.01 # initial learning rate
 momentum = 0.9 # momentum parameter of SGD
 max_steps = int(7e5) # number of iterations (mini-batches)
 decay_steps = int(5e5) # decay steps (tf.train.exponential_decay)
-max_steps_init = 500
+max_steps_init = 18
 decay_factor = 0.1 # decay factor (tf.train.exponential_decay)
 batch_size = 500 # mini-batch size
 moving_average_decay = 0.999 # moving average decay of variables to be saved
@@ -53,7 +55,7 @@ decay_steps_init = int(5e4) # decay steps for initializing only MLR
 
 # Other -------------------------------------------------------
 # # Note: save folder must be under ./storage
-dir_path=f'./experiment/layer{len(list_hidden_nodes)}-seg{num_segment}' 
+dir_path = f'./experiment/{datetime.now().strftime("%H%M")}layer{num_layer}-seg{num_segment}'
 train_dir = dir_path # save directory (Caution!! this folder will be removed at first)
 saveparmpath = os.path.join(train_dir, 'parm.pkl') # file name to save parameters
 
@@ -140,5 +142,11 @@ model_parm = {'random_seed':random_seed,
 logger.info("Save parameters...")
 with open(saveparmpath, 'wb') as f:
     pickle.dump(model_parm, f, pickle.HIGHEST_PROTOCOL)
+    
+# logger.info("evaluation...")
+# Evaluate ----------------------------------------------------
+#TODO
+
 logger.info("done.")
+
 

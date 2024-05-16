@@ -9,7 +9,7 @@ from subfunc.showdata import *
 
 # ============================================================
 # ============================================================
-def pca(x, num_comp=None, params=None, zerotolerance = 1e-10):
+def pca(x, num_comp=None, params=None, zerotolerance = 1e-8):
     """Apply PCA whitening to data.
     Args:
         x: data. 2D ndarray [num_comp, num_data]
@@ -51,8 +51,8 @@ def pca(x, num_comp=None, params=None, zerotolerance = 1e-10):
         V = V[:, ::-1]
 
         zeroeigval = np.sum((d[:num_comp] / d[0]) < zerotolerance)
-        if zeroeigval > 0: # Do not allow zero eigenval
-            raise ValueError
+        # if zeroeigval > 0: # Do not allow zero eigenval
+        #     raise ValueError
 
         # Calculate contribution ratio
         contratio = np.sum(d[:num_comp]) / np.sum(d)

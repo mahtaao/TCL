@@ -17,7 +17,7 @@ from subfunc.showdata import *
 
 def load_EEG_data(data_path = 'data/', 
                   num_segment = 10,
-                  num_segmentdata = 100,
+                  num_segmentdata = 150,
                   random_seed = 0):
     """
     Load EEG data from files and prepare edge data.
@@ -64,8 +64,8 @@ def load_EEG_data(data_path = 'data/',
          
         
         # cut time slice for memory efficiency
-        start_time = 15  # select a 10-second window starting from 10 seconds
-        end_time = 20  # select a 10-second window starting from 10 seconds
+        start_time = 5  # select a 10-second window starting from 10 seconds
+        end_time = 155  # select a 10-second window starting from 10 seconds
         rec_time_length = end_time - start_time 
         freq = recording.info['sfreq']
         resampled_recording = recording.get_data().astype(np.float32)
@@ -95,19 +95,25 @@ def load_EEG_data(data_path = 'data/',
         # source_activity = np.dot(recording_data, inv.T)
         # sensor_data.append(recording)
         # source_data.append(source_activity)
+
+
+        source_activity = []
+        print('All the shapes: resampled_recording:', resampled_recording.shape, 'inv:', inv.T.shape, 'parcellation:', parcellation.T.shape)
+        parcelated_inversed = np.dot(inv.T, parcellation.T)
+        print('parcelated_inversed shape:', parcelated_inversed.shape)
+        print('resampled_recording shape:', resampled_recording.shape)
+        source_activity.append(np.dot(resampled_recording.T, parcelated_inversed).T)
         
         
         # Perform the dot product in chunks:
-        chunk_size = parcellation.shape[1]
-        source_activity = []
-        for i in range(0, len(resampled_recording), chunk_size):
-            print('i:', i)
-            print('All the shapes: resampled_recording:', resampled_recording.shape, 'inv:', inv.T.shape, 'parcellation:', parcellation.T.shape)
-            # resampled_recording: (1, 501) inv: (127, 67748) parcellation: (67748, 116)
-            parcelated_inversed = np.dot(inv.T, parcellation.T)
-            print('parcelated_inversed shape:', parcelated_inversed.shape)
-            print('resampled_recording shape:', resampled_recording[:, i:i + chunk_size].shape)
-            source_activity.append(np.dot(resampled_recording[:, i:i + chunk_size].T, parcelated_inversed).T)
+        # chunk_size = parcellation.shape[1]
+        # for i in range(0, len(resampled_recording), chunk_size):
+        #     print('i:', i)
+        #     print('All the shapes: resampled_recording:', resampled_recording.shape, 'inv:', inv.T.shape, 'parcellation:', parcellation.T.shape)
+            # parcelated_inversed = np.dot(inv.T, parcellation.T)
+            # print('parcelated_inversed shape:', parcelated_inversed.shape)
+            # print('resampled_recording shape:', resampled_recording[:, i:i + chunk_size].shape)
+            # source_activity.append(np.dot(resampled_recording[:, i:i + chunk_size].T, parcelated_inversed).T)
             
         
         print('source_activity shape 1 :', np.array(source_activity).shape)
@@ -122,7 +128,7 @@ def load_EEG_data(data_path = 'data/',
     # So, if there are more that 116 (# of parcels) channels, we will get rid of the extra channels
     recording = recording.pick(range(parcellation.shape[0]))
     recording_data = recording.get_data(start_time, end_time).astype(np.float32)
-    print('Recording data shape 3:', resampled_recording.shape) #(127, 2505)
+    # print('Recording data shape 3:', resampled_recording.shape) #(127, 2505)
     # Generate labels
     num_data = resampled_recording.shape[1]
     num_segmentdata = int(freq * 1) # 1 second segments
@@ -133,7 +139,7 @@ def load_EEG_data(data_path = 'data/',
         start_idx = num_segmentdata*sn
         end_idx = num_segmentdata*(sn+1)
         label[start_idx:end_idx] = sn
-        print('start_idx:', start_idx, 'end_idx:', end_idx, sn)
+        # print('start_idx:', start_idx, 'end_idx:', end_idx, sn, label[start_idx:end_idx])
         
     sensor = torch.from_numpy(np.array(resampled_recording[:parcellation.shape[0]]))
 

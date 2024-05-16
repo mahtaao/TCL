@@ -6,15 +6,17 @@
 
 
 
+from datetime import datetime
 import os
 import numpy as np
 import pickle
+import seaborn as sns
 
 from subfunc.preprocessing import pca
 from subfunc.showdata import *
 from sklearn.decomposition import FastICA
 import torch
-from TCL.tcl_pytorch.custom_dataset import SimulatedDataset
+from tcl_pytorch.custom_dataset import EEGDataset
 from tcl_pytorch.model import TCL,TCL_new
 import torch.utils.data as data
 from sklearn.metrics import confusion_matrix,accuracy_score
@@ -23,8 +25,10 @@ from subfunc.munkres import Munkres
 
 # parameters ==================================================
 # =============================================================
+unseen = 'Unseen' # 'Unseen' or ''
 
-eval_dir = './storage/temp'
+# eval_dir=f'./experiment/{datetime.now().strftime("%H%M")}layer{5}-seg{150}'
+eval_dir = f'experiment/2109layer5-seg150'
 parmpath = os.path.join(eval_dir, 'parm.pkl')
 modelpath = os.path.join(eval_dir, 'model.pth')
 apply_fastICA = True
@@ -100,14 +104,13 @@ list_hidden_nodes = model_parm['list_hidden_nodes']
 moving_average_decay = model_parm['moving_average_decay']
 random_seed = model_parm['random_seed']
 pca_parm = model_parm['pca_parm']
-batch_size = 8 
+batch_size = 500
 
 # Generate sensor signal --------------------------------------
-eval_dataset = SimulatedDataset(num_comp=num_comp,
-                                                 num_segment=num_segment,
-                                                 num_segmentdata=num_segmentdata,
-                                                 num_layer=num_layer,
-                                                 random_seed=random_seed)
+eval_dataset = EEGDataset(root_dir='TCL\data\\'+unseen,
+                                        num_segment=num_segment,
+                                        num_segmentdata=num_segmentdata,
+                                        random_seed=random_seed)
 
 
 # Preprocessing -----------------------------------------------
@@ -125,7 +128,7 @@ predictions=[]
 if apply_fastICA:
     ica = FastICA(random_state=random_seed)
 # Evaluate model ----------------------------------------------
-   
+feat_vals =[]
 for data_inputs, data_labels in data_loader:
     ## Step 1: Move input data to device (only strictly necessary if we use GPU)
     x_batch = data_inputs
@@ -138,9 +141,9 @@ for data_inputs, data_labels in data_loader:
     labels.extend(y_batch.detach().numpy())
     predictions.extend(pred.detach().numpy())
         # Apply fastICA -----------------------------------------------
+    feat_vals.extend(feats.detach().numpy())
     if apply_fastICA:
-        feateval = feats.T 
-        feat_val = ica.fit_transform(feateval.detach().numpy())
+        feat_val = ica.fit_transform(feats.detach().numpy())
     else:
         feat_val = feats.detach().numpy()
     # Evaluate ----------------------------------------------------5
@@ -150,20 +153,44 @@ for data_inputs, data_labels in data_loader:
         raise ValueError
     # Estimated feature
     #
-    corrmat, sort_idx, _ = correlation(feat_val.T, xseval.detach().numpy(), 'Pearson')
-    abscorr.extend(np.abs(np.diag(corrmat)))
+    # corrmat, sort_idx, _ = correlation(feat_val, xseval.detach().numpy(), 'Pearson')
+    # abscorr.extend(np.abs(np.diag(corrmat)))
 
 # accuracy = test_acc/eval_dataset.__len__()
 accuracy = accuracy_score(labels, predictions)
 confmat= confusion_matrix(labels, predictions)
-meanabscorr=np.mean(abscorr)
+# meanabscorr=np.mean(abscorr)
+from sklearn.linear_model import LinearRegression
 
+source, pca_parm = pca(eval_dataset.source.detach().numpy(), num_comp=num_comp)
+
+feat_vals = np.stack(feat_vals, axis=0).reshape(-1,num_comp)
+reg1 = LinearRegression().fit(feat_vals, source.transpose())
+tcl_score= reg1.score(feat_vals, source.transpose())
+
+import matplotlib.pyplot as plt
+import numpy as np
+# plt.imshow(reg1.coef_ ,cmap='hot', interpolation='nearest')
+ax = sns.heatmap(reg1.coef_, cmap="Reds")
+ax.set_title("TCL-Source Reconstruction-Coefficient")
+plt.savefig(os.path.join(eval_dir, "tcl_" + unseen + ".pdf"))
+reg2 = LinearRegression().fit(eval_dataset.sensor.transpose(), source.transpose())
+pca_score= reg2.score(eval_dataset.sensor.transpose(),source.transpose())
+print("PCA coef_")
+ax = sns.heatmap(reg2.coef_, cmap="Reds")
+ax.set_title("PCA-Source Reconstruction-Coefficient")
+plt.savefig(os.path.join(eval_dir, "pca_" + unseen + ".pdf"))
 
 # Display results ---------------------------------------------
 print("Result...")
 print("    accuracy(test) : {0:7.4f} [%]".format(accuracy*100))
-print("    correlation     : {0:7.4f}".format(meanabscorr))
+# print("    correlation     : {0:7.4f}".format(meanabscorr))
+print("    TCL_score(test) : {0:7.4f}".format(tcl_score))
+print("    PCA_score(test) : {0:7.4f} ".format(pca_score))
+print(f"    TCL_intercep(test) :{reg1.intercept_}")
+print(f"    PCA_intercep(test) :{reg2.intercept_}")
+
+
 
 print("done.")
-
 
