@@ -28,7 +28,7 @@ from subfunc.munkres import Munkres
 unseen = 'Unseen' # 'Unseen' or ''
 
 # eval_dir=f'./experiment/{datetime.now().strftime("%H%M")}layer{5}-seg{150}'
-eval_dir = f'experiment/2109layer5-seg150'
+eval_dir = f'experiment/2148layer5-seg150'
 parmpath = os.path.join(eval_dir, 'parm.pkl')
 modelpath = os.path.join(eval_dir, 'model.pth')
 apply_fastICA = True
