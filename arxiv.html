@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Time-Contrastive Unsupervised Representation Learning for EEG Data</title>
+<!--Generated on Thu Sep 19 21:15:00 2024 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="arxiv_files/bootstrap.min.css" type="text/css" crossorigin="anonymous">
+<link rel="stylesheet" href="arxiv_files/ar5iv.0.7.9.min.css" type="text/css">
+<link rel="stylesheet" crossorigin="anonymous" data-is-imported="true" media="" href="arxiv_files/p_002.css"><link rel="stylesheet" crossorigin="anonymous" data-is-imported="true" media="" href="arxiv_files/rlk7syr.css"><link rel="stylesheet" href="arxiv_files/ar5iv-fonts.0.7.9.min.css" type="text/css">
+<link rel="stylesheet" href="arxiv_files/latexml_styles.css" type="text/css">
+<script src="arxiv_files/bootstrap.bundle.min.js"></script>
+<script src="arxiv_files/html2canvas.min.js"></script>
+<script src="arxiv_files/addons_new.js"></script>
+<script src="arxiv_files/feedbackOverlay.js"></script>
+<link rel="stylesheet" crossorigin="anonymous" data-is-imported="true" media="" href="arxiv_files/p.css"><link rel="stylesheet" href="arxiv_files/rwr5zpx.css" crossorigin="anonymous"><link rel="icon" type="image/png" href="https://static.arxiv.org/static/browse/0.3.4/images/icons/favicon-16x16.png" sizes="16x16"><link rel="icon" type="image/png" href="https://static.arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png" sizes="32x32"></head>
+<body data-new-gr-c-s-check-loaded="8.912.0" data-gr-ext-installed=""><header class="mob_header">
+    <div class="html-header-logo">
+      <a href="https://arxiv.org/">
+        <img alt="logo" class="logomark" role="presentation" width="100" src="arxiv_files/arxiv-logomark-small-white.svg">
+        <span class="sr-only">Back to arXiv</span>
+      </a>
+    </div>
+
+    <!--TOC, dark mode, links-->
+    <div class="html-header-nav">
+      <!--back to abstract-->
+      
+      <!--dark mode-->
+      <a class="ar5iv-toggle-color-scheme" href="javascript:toggleColorScheme()" title="Toggle dark/light mode" aria-label="System preference">
+        <label id="automatic-tog" class="toggle-icon" title="Switch to light mode" for="__palette_3">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"></path></svg>
+        </label>
+        <label id="light-tog" class="toggle-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"></path></svg>
+        </label>
+        <label id="dark-tog" class="toggle-icon" title="Switch to system preference" for="__palette_2" hidden="">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"></path></svg>
+        </label>
+      </a>
+      <!--nav-->
+      <button class="navbar-toggler ar5iv-footer-button" type="button" data-bs-theme="dark" data-bs-toggle="collapse" aria-expanded="false" data-bs-target=".ltx_page_main &gt;.ltx_TOC.mobile" aria-controls="navbarSupportedContent" aria-label="Toggle navigation" style="border:none; margin-right: 0em;">
+        <svg xmlns="http://www.w3.org/2000/svg" height="1.25em" viewBox="0 0 448 512" aria-hidden="true" role="img" fill="#ffffff"><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path></svg>
+      </button>
+    </div>
+    </header><header class="desktop_header">
+    <div class="html-header-logo">
+      <a href="https://arxiv.org/">
+          <img alt="logo" class="logo" role="presentation" width="100" src="arxiv_files/arxiv-logo-one-color-white.svg">
+          <span class="sr-only">Back to arXiv</span>
+      </a>
+    </div>
+    <div class="html-header-message" role="banner">
+        <p>This is <strong>experimental HTML</strong> to improve 
+accessibility. By design, HTML will not look exactly like the PDF. 
+Please report any errors that don't represent the intent or meaning of 
+your paper. <span class="sr-only">Use Alt+Y to toggle on accessible reporting links and Alt+Shift+Y to toggle off.</span> View LaTeX Markup <a href="https://info.arxiv.org/help/submit_latex_best_practices.html" target="_blank">Best Practices</a> for Successful HTML Papers.
+        </p>
+    </div>
+    <nav class="html-header-nav">
+      <a class="ar5iv-footer-button hover-effect" href="https://info.arxiv.org/about/accessible_HTML.html" target="_blank">Why HTML?</a>
+      <a class="ar5iv-footer-button hover-effect" target="_blank" href="#myForm" onclick="event.preventDefault(); var modal = document.getElementById('myForm'); modal.style.display = 'block'; bugReportState.setInitiateWay('Header');">Report Issue</a>
+      
+      
+      <a class="ar5iv-toggle-color-scheme" href="javascript:toggleColorScheme()" title="Toggle dark/light mode">
+        <label id="automatic-tog" class="toggle-icon" title="Switch to light mode" for="__palette_3">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"></path></svg>
+        </label>
+        <label id="light-tog" class="toggle-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"></path></svg>
+        </label>
+        <label id="dark-tog" class="toggle-icon" title="Switch to system preference" for="__palette_2" hidden="">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"></path></svg>
+        </label>
+      </a>
+    </nav></header>
+
+<div class="ltx_page_main" id="main">
+<nav class="ltx_TOC active" aria-labelledby="toc_header"><h2 id="toc_header" class="sr-only">Table of Contents</h2>
+
+      <div id="listIcon" type="button" class="hide">
+          <svg width="17px" height="17px" viewBox="0 0 512 512" style="pointer-events: none;">
+          <path d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z"></path>
+          </svg>
+      </div>
+      <div id="arrowIcon" type="button">
+          <svg width="17px" height="17px" viewBox="0 0 448 512" style="pointer-events: none;">
+          <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path>
+          </svg>
+      </div><ol class="ltx_toclist"><li class="ltx_tocentry ltx_tocentry_section">
+    <a class="ltx_ref" href="https://services.arxiv.org/html/submission/5866306/view#abstract" title="Abstract">
+      <span class="ltx_text ltx_ref_title">
+        <span class="ltx_tag ltx_tag_ref"></span>
+        Abstract
+      </span>
+    </a></li>
+<li class="ltx_tocentry ltx_tocentry_section"><a href="#S1" title="In Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1 </span>Introduction</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section">
+<a href="#S2" title="In Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2 </span>Related Work</span></a>
+<ol class="ltx_toclist ltx_toclist_section">
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S2.SS1" title="In 2 Related Work ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.1 </span>Temporal Contrastive Learning (TCL)</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S2.SS2" title="In 2 Related Work ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.2 </span>SSL for EEG Data</span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_section">
+<a href="#S3" title="In Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Dataset</span></a>
+<ol class="ltx_toclist ltx_toclist_section">
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S3.SS1" title="In 3 Dataset ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.1 </span>Simulated Data</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S3.SS2" title="In 3 Dataset ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.2 </span>EEG Data</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S3.SS3" title="In 3 Dataset ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.3 </span>EEG Source Reconstruction</span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_section">
+<a href="#S4" title="In Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4 </span>Methodology</span></a>
+<ol class="ltx_toclist ltx_toclist_section">
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S4.SS1" title="In 4 Methodology ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4.1 </span>TCL Implementation</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S4.SS2" title="In 4 Methodology ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4.2 </span>Data Preparation</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S4.SS3" title="In 4 Methodology ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4.3 </span>TCL Training</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S4.SS4" title="In 4 Methodology ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4.4 </span>Sparse Prediction Analysis</span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_section">
+<a href="#S5" title="In Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">5 </span>Results</span></a>
+<ol class="ltx_toclist ltx_toclist_section">
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S5.SS1" title="In 5 Results ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">5.1 </span>Simulated Data Analysis</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a href="#S5.SS2" title="In 5 Results ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">5.2 </span>EEG Data Analysis</span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_section"><a href="#S6" title="In Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">6 </span>Conclusion and Future Work</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section">
+<a href="#S7" title="In Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">7 </span>Appendix</span></a>
+<ol class="ltx_toclist ltx_toclist_section">
+<li class="ltx_tocentry ltx_tocentry_subsubsection"><a href="#S7.SS0.SSS1" title="In 7 Appendix ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">7.0.1 </span>Parameters</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsubsection"><a href="#S7.SS0.SSS2" title="In 7 Appendix ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">7.0.2 </span>Execution</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsubsection"><a href="#S7.SS0.SSS3" title="In 7 Appendix ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">7.0.3 </span>Outputs</span></a></li>
+</ol>
+</li>
+</ol></nav>
+
+<div class="ltx_page_content"><div id="target-section" class="section"><a id="license-tr" href="https://info.arxiv.org/help/license/index.html#licenses-available">License: CC BY 4.0</a></div>
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">Time-Contrastive Unsupervised Representation Learning for EEG Data</h1><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Mahta Ramezanian-Panahi 
+<br class="ltx_break">&amp;Pooneh Mousavi 
+<br class="ltx_break">&amp;Irina Rish 
+<br class="ltx_break">&amp;Mirco Ravanelli 
+<br class="ltx_break">&amp;Guillaume Dumas 
+<br class="ltx_break">
+</span><span class="ltx_author_notes">Mila - Quebec AI Institute, Montreal, Quebec H2S 3H1, Canada. <span id="id1.1.id1" class="ltx_text ltx_font_typewriter">mahta.ramezanian@mila.quebec</span>Mila - Quebec AI Institute, Montreal, Quebec H2S 3H1, Canada. <span id="id2.2.id1" class="ltx_text ltx_font_typewriter">mousavi.pooneh@gmail.com</span>Department
+ of Computer Science and Operations Research, University of Montreal, 
+Pavillon André-Aisenstadt 2920, chemin de la Tour, Montreal, Quebec H3T 
+1J4, Canada. <span id="id3.3.id1" class="ltx_text ltx_font_typewriter">irina.rish@umontreal.ca</span>Concordia University, Mila-Quebec AI Institute, Montréal, 1455 Blvd. De Maisonneuve Ouest, H3G 1M8, Canada. <span id="id4.4.id1" class="ltx_text ltx_font_typewriter">mirco.ravanelli@concordia.ca</span>Department
+ of Psychiatry and Addiction, University of Montreal, Pavillon 
+Roger-Gaudry 2900, boul. Édouard-Montpetit, Montreal, Quebec H3T 1J4, 
+Canada. <span id="id5.5.id1" class="ltx_text ltx_font_typewriter">guillaume.dumas@umontreal.ca</span></span></span>
+</div><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div class="ltx_abstract" id="abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract</h6><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<p id="id6.id1" class="ltx_p">Uncovering independent components from 
+electroencephalography (EEG) data is a critical pursuit in neuroimaging 
+as it allows for causal discovery, capturing intricate brain dynamics, 
+or simply separating neural signals from noise or artifacts. At the same
+ time, many of the methods of causal inference are non-applicable 
+directly to non-invasive brain recordings where the treatment effect 
+cannot be directly measured.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<p id="id7.id2" class="ltx_p">In this study, we compare the 
+representation gained by Temporal Contrastive Learning (TCL) with that 
+of MNE source estimate algorithm. Building upon the foundation of TCL 
+and nonlinear Independent Component Analysis (ICA), our methodology 
+addresses the challenges of invariance, identifiability, and 
+nonlinearity inherent in brain dynamics analysis. Our results reveal 
+distinct patterns in component generation between Principal Component 
+Analysis (PCA) and TCL, with the latter showing sparser coefficients as 
+the dataset size increases. This work is a step towards finding 
+invariant and human-interpretable representations for identifying robust
+ biomarkers or phenotypes from EEG data.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<section id="S1" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1 </span>Introduction</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S1.p1" class="ltx_para ltx_noindent">
+<p id="S1.p1.1" class="ltx_p">Causal representation learning aims to 
+learn representations that capture the underlying causal mechanisms of 
+the data. This field potentially promises invariant, identifiable, and 
+nonlinear representations that can be disentangled, generalized, and 
+interpreted. Invariance is crucial in neuroscience, where the goal is to
+ identify representations that are shared across different modalities of
+ data acquisition, conditions, or populations. Identifiability ensures 
+that the learned representations are unique and meaningful. Nonlinearity
+ is essential for capturing the complex dynamics of brain activity. 
+Disentanglibility allows for the separation of underlying factors, while
+ generalizability and interpretability enable the application of learned
+ representations to new scenarios and the understanding of their 
+meaning.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S1.p2" class="ltx_para ltx_noindent">
+<p id="S1.p2.1" class="ltx_p">In this project, we focus on Time 
+Contrastive Learning (TCL), a nonlinear Independent Component Analysis 
+(ICA) method that has shown promise in learning disentangled 
+representations of brain activity. TCL has been applied to 
+Magnetoencephalography (MEG) data, but its applicability to 
+Electroencephalography (EEG) data remains to be explored. We investigate
+ the potential of TCL in learning disentangled representations of EEG 
+data and explore its limitations and assumptions.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S1.p3" class="ltx_para ltx_noindent">
+<p id="S1.p3.1" class="ltx_p">Our goal is to verify whether TCL can be 
+used to learn meaningful representations of brain activity from EEG 
+data, which can be used for further analysis and potentially aid in the 
+diagnosis of phenotypic data. This project contributes to the broader 
+goal of developing causal representation learning methods that can 
+uncover the underlying mechanisms of brain activity and provide insights
+ into the neural basis of cognition and behavior.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section id="S2" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2 </span>Related Work</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<section id="S2.SS1" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.1 </span>Temporal Contrastive Learning (TCL)</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S2.SS1.p1" class="ltx_para ltx_noindent">
+<p id="S2.SS1.p1.1" class="ltx_p">Temporal Contrastive Learning (TCL) <cite class="ltx_cite ltx_citemacro_cite"><span class="ltx_ref ltx_missing_citation ltx_ref_self">hyvarinen2016unsupervised</span></cite>
+ is a method for training a feature extractor for time series data by 
+using segment indices as labels to discriminate between different time 
+windows. The process involves dividing the time series into segments, 
+labeling each data point with its segment index, and then learning a 
+feature extractor alongside a Multinomial Logistic Regression (MLR) 
+classifier. This setup aims to capture the temporal structure and 
+distribution differences across segments, facilitating unsupervised 
+learning through classification. A Multilayer Perceptron (MLP) is 
+typically used as the feature extractor because of its ability to model 
+nonlinear relationships, making it suitable for learning from data in 
+conjunction with the MLR. The primary goal of TCL is to train the 
+feature extractor, with the MLR serving merely as a training tool 
+without significance after the training phase.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section id="S2.SS2" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.2 </span>SSL for EEG Data</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S2.SS2.p1" class="ltx_para ltx_noindent">
+<p id="S2.SS2.p1.1" class="ltx_p">Self-Supervised Learning (SSL) methods
+ have been increasingly applied to EEG data to learn meaningful 
+representations without explicit labels. These methods leverage the 
+intrinsic structure of EEG signals to create surrogate tasks for 
+training. For instance, contrastive learning approaches have been used 
+to learn invariant representations across different EEG recording 
+sessions or subjects. However, many SSL methods have yet to fully 
+exploit the temporal dynamics inherent in EEG data, which is where TCL 
+could offer significant advantages.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+</section>
+<section id="S3" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3 </span>Dataset</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S3.p1" class="ltx_para ltx_noindent">
+<p id="S3.p1.1" class="ltx_p">We utilize three sources of data: 
+simulated data, employed for result replication; EEG data, serving as 
+the sensor data (mixed signals) for the primary experiment; and EEG 
+Source Reconstruction, regarded as our target data (clean source data).</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<section id="S3.SS1" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.1 </span>Simulated Data</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S3.SS1.p1" class="ltx_para ltx_noindent">
+<p id="S3.SS1.p1.2" class="ltx_p">To validate our TCL implementation, we
+ test it using simulated data. To generate this simulated data, we use 
+the same function as in the original repository. We simulate data from 
+the nonlinear ICA model, using the simplified case of the Theorem. In 
+this setup, nonstationary source signals (n = 20, segment length 512) 
+were randomly generated by modulating Laplacian sources with <math id="S3.SS1.p1.1.m1.3" class="ltx_Math" alttext="\gamma_{i,1}(\tau)" display="inline"><semantics id="S3.SS1.p1.1.m1.3a"><mrow id="S3.SS1.p1.1.m1.3.4" xref="S3.SS1.p1.1.m1.3.4.cmml"><msub id="S3.SS1.p1.1.m1.3.4.2" xref="S3.SS1.p1.1.m1.3.4.2.cmml"><mi id="S3.SS1.p1.1.m1.3.4.2.2" xref="S3.SS1.p1.1.m1.3.4.2.2.cmml">γ</mi><mrow id="S3.SS1.p1.1.m1.2.2.2.4" xref="S3.SS1.p1.1.m1.2.2.2.3.cmml"><mi id="S3.SS1.p1.1.m1.1.1.1.1" xref="S3.SS1.p1.1.m1.1.1.1.1.cmml">i</mi><mo id="S3.SS1.p1.1.m1.2.2.2.4.1" xref="S3.SS1.p1.1.m1.2.2.2.3.cmml">,</mo><mn id="S3.SS1.p1.1.m1.2.2.2.2" xref="S3.SS1.p1.1.m1.2.2.2.2.cmml">1</mn></mrow></msub><mo id="S3.SS1.p1.1.m1.3.4.1" xref="S3.SS1.p1.1.m1.3.4.1.cmml">⁢</mo><mrow id="S3.SS1.p1.1.m1.3.4.3.2" xref="S3.SS1.p1.1.m1.3.4.cmml"><mo stretchy="false" id="S3.SS1.p1.1.m1.3.4.3.2.1" xref="S3.SS1.p1.1.m1.3.4.cmml">(</mo><mi id="S3.SS1.p1.1.m1.3.3" xref="S3.SS1.p1.1.m1.3.3.cmml">τ</mi><mo stretchy="false" id="S3.SS1.p1.1.m1.3.4.3.2.2" xref="S3.SS1.p1.1.m1.3.4.cmml">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content" id="S3.SS1.p1.1.m1.3b"><apply id="S3.SS1.p1.1.m1.3.4.cmml" xref="S3.SS1.p1.1.m1.3.4"><times id="S3.SS1.p1.1.m1.3.4.1.cmml" xref="S3.SS1.p1.1.m1.3.4.1"></times><apply id="S3.SS1.p1.1.m1.3.4.2.cmml" xref="S3.SS1.p1.1.m1.3.4.2"><csymbol cd="ambiguous" id="S3.SS1.p1.1.m1.3.4.2.1.cmml" xref="S3.SS1.p1.1.m1.3.4.2">subscript</csymbol><ci id="S3.SS1.p1.1.m1.3.4.2.2.cmml" xref="S3.SS1.p1.1.m1.3.4.2.2">𝛾</ci><list id="S3.SS1.p1.1.m1.2.2.2.3.cmml" xref="S3.SS1.p1.1.m1.2.2.2.4"><ci id="S3.SS1.p1.1.m1.1.1.1.1.cmml" xref="S3.SS1.p1.1.m1.1.1.1.1">𝑖</ci><cn type="integer" id="S3.SS1.p1.1.m1.2.2.2.2.cmml" xref="S3.SS1.p1.1.m1.2.2.2.2">1</cn></list></apply><ci id="S3.SS1.p1.1.m1.3.3.cmml" xref="S3.SS1.p1.1.m1.3.3">𝜏</ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p1.1.m1.3c">\gamma_{i,1}(\tau)</annotation><annotation encoding="application/x-llamapun" id="S3.SS1.p1.1.m1.3d">italic_γ start_POSTSUBSCRIPT italic_i , 1 end_POSTSUBSCRIPT ( italic_τ )</annotation></semantics></math> values drawn from a uniform distribution in the range [0, 1]. For the nonlinear mixing function <math id="S3.SS1.p1.2.m2.1" class="ltx_Math" alttext="f(s)" display="inline"><semantics id="S3.SS1.p1.2.m2.1a"><mrow id="S3.SS1.p1.2.m2.1.2" xref="S3.SS1.p1.2.m2.1.2.cmml"><mi id="S3.SS1.p1.2.m2.1.2.2" xref="S3.SS1.p1.2.m2.1.2.2.cmml">f</mi><mo id="S3.SS1.p1.2.m2.1.2.1" xref="S3.SS1.p1.2.m2.1.2.1.cmml">⁢</mo><mrow id="S3.SS1.p1.2.m2.1.2.3.2" xref="S3.SS1.p1.2.m2.1.2.cmml"><mo stretchy="false" id="S3.SS1.p1.2.m2.1.2.3.2.1" xref="S3.SS1.p1.2.m2.1.2.cmml">(</mo><mi id="S3.SS1.p1.2.m2.1.1" xref="S3.SS1.p1.2.m2.1.1.cmml">s</mi><mo stretchy="false" id="S3.SS1.p1.2.m2.1.2.3.2.2" xref="S3.SS1.p1.2.m2.1.2.cmml">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content" id="S3.SS1.p1.2.m2.1b"><apply id="S3.SS1.p1.2.m2.1.2.cmml" xref="S3.SS1.p1.2.m2.1.2"><times id="S3.SS1.p1.2.m2.1.2.1.cmml" xref="S3.SS1.p1.2.m2.1.2.1"></times><ci id="S3.SS1.p1.2.m2.1.2.2.cmml" xref="S3.SS1.p1.2.m2.1.2.2">𝑓</ci><ci id="S3.SS1.p1.2.m2.1.1.cmml" xref="S3.SS1.p1.2.m2.1.1">𝑠</ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p1.2.m2.1c">f(s)</annotation><annotation encoding="application/x-llamapun" id="S3.SS1.p1.2.m2.1d">italic_f ( italic_s )</annotation></semantics></math>,
+ we employed an MLP ("mixing-MLP"). To ensure the invertibility of the 
+mixing-MLP, we utilized leaky ReLU units and maintained an equal number 
+of units across all layers.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section id="S3.SS2" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.2 </span>EEG Data</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S3.SS2.p1" class="ltx_para ltx_noindent">
+<p id="S3.SS2.p1.1" class="ltx_p">The dataset used in this study was 
+obtained from the HBN (Healthy Brain Network) Biobank, a comprehensive 
+data repository that includes multimodal brain imaging, 
+electroencephalography (EEG), eye tracking, genetics, digital voice and 
+video samples, and actigraphy data. From this dataset, we selected 
+high-density EEG recordings from 30 participants.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S3.SS2.p2" class="ltx_para ltx_noindent">
+<p id="S3.SS2.p2.1" class="ltx_p">The high-density EEG data were 
+recorded in a sound-shielded room at a sampling rate of 500 Hz with a 
+bandpass of 0.1 to 100 Hz, using a 128-channel EEG geodesic hydrocel 
+system by Electrical Geodesics Inc. (EGI). The recording reference was 
+at Cz (vertex of the head) and the impedance of each electrode was kept 
+below 40 kOhm. Each participant’s head circumference was measured, and 
+an appropriately sized EEG net was selected. The time to prepare the EEG
+ net was no more than 30 minutes, and the impedance was tested every 30 
+minutes during recording, with saline added as needed. More details are 
+given in Section <a href="#S7" title="7 Appendix ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_tag">7</span></a>.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S3.SS2.p3" class="ltx_para ltx_noindent">
+<p id="S3.SS2.p3.1" class="ltx_p">The shape of the EEG data was <math id="S3.SS2.p3.1.m1.3" class="ltx_Math" alttext="(94,128,501)" display="inline"><semantics id="S3.SS2.p3.1.m1.3a"><mrow id="S3.SS2.p3.1.m1.3.4.2" xref="S3.SS2.p3.1.m1.3.4.1.cmml"><mo stretchy="false" id="S3.SS2.p3.1.m1.3.4.2.1" xref="S3.SS2.p3.1.m1.3.4.1.cmml">(</mo><mn id="S3.SS2.p3.1.m1.1.1" xref="S3.SS2.p3.1.m1.1.1.cmml">94</mn><mo id="S3.SS2.p3.1.m1.3.4.2.2" xref="S3.SS2.p3.1.m1.3.4.1.cmml">,</mo><mn id="S3.SS2.p3.1.m1.2.2" xref="S3.SS2.p3.1.m1.2.2.cmml">128</mn><mo id="S3.SS2.p3.1.m1.3.4.2.3" xref="S3.SS2.p3.1.m1.3.4.1.cmml">,</mo><mn id="S3.SS2.p3.1.m1.3.3" xref="S3.SS2.p3.1.m1.3.3.cmml">501</mn><mo stretchy="false" id="S3.SS2.p3.1.m1.3.4.2.4" xref="S3.SS2.p3.1.m1.3.4.1.cmml">)</mo></mrow><annotation-xml encoding="MathML-Content" id="S3.SS2.p3.1.m1.3b"><vector id="S3.SS2.p3.1.m1.3.4.1.cmml" xref="S3.SS2.p3.1.m1.3.4.2"><cn type="integer" id="S3.SS2.p3.1.m1.1.1.cmml" xref="S3.SS2.p3.1.m1.1.1">94</cn><cn type="integer" id="S3.SS2.p3.1.m1.2.2.cmml" xref="S3.SS2.p3.1.m1.2.2">128</cn><cn type="integer" id="S3.SS2.p3.1.m1.3.3.cmml" xref="S3.SS2.p3.1.m1.3.3">501</cn></vector></annotation-xml><annotation encoding="application/x-tex" id="S3.SS2.p3.1.m1.3c">(94,128,501)</annotation><annotation encoding="application/x-llamapun" id="S3.SS2.p3.1.m1.3d">( 94 , 128 , 501 )</annotation></semantics></math>,
+ where 94 represents the number of epochs, 128 represents the number of 
+EEG channels, and 501 represents the number of time samples. In the end,
+ we only used 116 of the channels that were not marked as bad (these are
+ the channels or timestamps that are prone to have too low of 
+signal-to-noise ratio or in which the presence of spurious artifacts is 
+detected).</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S3.SS2.p4" class="ltx_para ltx_noindent">
+<p id="S3.SS2.p4.1" class="ltx_p">This high-density EEG dataset provides
+ a rich source of neural activity data that can be used to investigate 
+various cognitive and neurological processes. As the ground truth, we 
+took into account the source estimate based on the EEG data to localize 
+the underlying neural sources.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section id="S3.SS3" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.3 </span>EEG Source Reconstruction</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S3.SS3.p1" class="ltx_para ltx_noindent">
+<p id="S3.SS3.p1.1" class="ltx_p">The aim of this work is comparing the 
+components of TCL with linear inverse methods for source reconstruction 
+of EEG data. Specifically, we have used a currently private library 
+developed in PPSP lab that uses minimum norm estimation (MNE) techniques
+ that were mostly follow-ups on Jas et al.&nbsp;<cite class="ltx_cite ltx_citemacro_cite"><span class="ltx_ref ltx_missing_citation ltx_ref_self">jas2018reproducible</span></cite> based on Automated anatomical labeling atlas 3 <cite class="ltx_cite ltx_citemacro_cite"><span class="ltx_ref ltx_missing_citation ltx_ref_self">rolls2020automated</span></cite> and hence the activities of 116 regions of 2D brain surfaces were estimated based on sensor recordings.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+</section>
+<section id="S4" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">4 </span>Methodology</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S4.p1" class="ltx_para ltx_noindent">
+<p id="S4.p1.1" class="ltx_p">Our pipeline implementation involves four 
+primary steps. First, we try to reproduce the results reported in the 
+original paper (TCL <cite class="ltx_cite ltx_citemacro_cite"><span class="ltx_ref ltx_missing_citation ltx_ref_self">hyvarinen2016unsupervised</span></cite>).
+ Second, we prepare our data, both simulated data and EEG data. Next, we
+ train a model to get a disentangled representation from mixed sensor 
+data. Lastly, we study if there exists a sparse linear predictor that 
+can predict the representation from our source construction (ground 
+truth) based on representation obtained from TCL.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<section id="S4.SS1" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.1 </span>TCL Implementation</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S4.SS1.p1" class="ltx_para ltx_noindent">
+<p id="S4.SS1.p1.1" class="ltx_p">In the initial step, we seek to reproduce the findings outlined in the TCL paper <cite class="ltx_cite ltx_citemacro_cite"><span class="ltx_ref ltx_missing_citation ltx_ref_self">hyvarinen2016unsupervised</span></cite>. However, the official code repository<span id="footnote1" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">1</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">1</sup><span class="ltx_tag ltx_tag_note">1</span><a href="https://github.com/hmorioka/TCL" title="" class="ltx_ref ltx_url ltx_font_typewriter">https://github.com/hmorioka/TCL</a></span></span></span>
+ is outdated, relying on TensorFlow and utilizing an unsupported version
+ of the library. Despite searching, we couldn’t find any updated PyTorch
+ or TensorFlow implementations. Therefore, we decided to develop our TCL
+ implementation in PyTorch, ensuring compatibility with the latest 
+libraries. Our model is compatible with PyTorch’s stable version, which,
+ at the time of writing this report, is 2.3.0. The code is available at <a href="https://github.com/poonehmousavi/TCL" title="" class="ltx_ref ltx_url ltx_font_typewriter">https://github.com/poonehmousavi/TCL</a>.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S4.SS1.p2" class="ltx_para ltx_noindent">
+<p id="S4.SS1.p2.4" class="ltx_p">We follow the same configuration as 
+described in the paper and the official GitHub repository. However, 
+achieving performance close to the reported results necessitates tuning 
+certain hyperparameters. We experiment with various optimizers, 
+including SGD, Adam, and AdamW. We haven’t observed significant 
+differences in their performance. Accordingly, we decide to proceed with
+ a simple SGD optimizer. Additionally, we conduct hyperparameter tuning 
+for the learning rate, exploring values within the range of <math id="S4.SS1.p2.1.m1.1" class="ltx_Math" alttext="1e" display="inline"><semantics id="S4.SS1.p2.1.m1.1a"><mrow id="S4.SS1.p2.1.m1.1.1" xref="S4.SS1.p2.1.m1.1.1.cmml"><mn id="S4.SS1.p2.1.m1.1.1.2" xref="S4.SS1.p2.1.m1.1.1.2.cmml">1</mn><mo id="S4.SS1.p2.1.m1.1.1.1" xref="S4.SS1.p2.1.m1.1.1.1.cmml">⁢</mo><mi id="S4.SS1.p2.1.m1.1.1.3" xref="S4.SS1.p2.1.m1.1.1.3.cmml">e</mi></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p2.1.m1.1b"><apply id="S4.SS1.p2.1.m1.1.1.cmml" xref="S4.SS1.p2.1.m1.1.1"><times id="S4.SS1.p2.1.m1.1.1.1.cmml" xref="S4.SS1.p2.1.m1.1.1.1"></times><cn type="integer" id="S4.SS1.p2.1.m1.1.1.2.cmml" xref="S4.SS1.p2.1.m1.1.1.2">1</cn><ci id="S4.SS1.p2.1.m1.1.1.3.cmml" xref="S4.SS1.p2.1.m1.1.1.3">𝑒</ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p2.1.m1.1c">1e</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p2.1.m1.1d">1 italic_e</annotation></semantics></math>-5 to <math id="S4.SS1.p2.2.m2.1" class="ltx_Math" alttext="1e" display="inline"><semantics id="S4.SS1.p2.2.m2.1a"><mrow id="S4.SS1.p2.2.m2.1.1" xref="S4.SS1.p2.2.m2.1.1.cmml"><mn id="S4.SS1.p2.2.m2.1.1.2" xref="S4.SS1.p2.2.m2.1.1.2.cmml">1</mn><mo id="S4.SS1.p2.2.m2.1.1.1" xref="S4.SS1.p2.2.m2.1.1.1.cmml">⁢</mo><mi id="S4.SS1.p2.2.m2.1.1.3" xref="S4.SS1.p2.2.m2.1.1.3.cmml">e</mi></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p2.2.m2.1b"><apply id="S4.SS1.p2.2.m2.1.1.cmml" xref="S4.SS1.p2.2.m2.1.1"><times id="S4.SS1.p2.2.m2.1.1.1.cmml" xref="S4.SS1.p2.2.m2.1.1.1"></times><cn type="integer" id="S4.SS1.p2.2.m2.1.1.2.cmml" xref="S4.SS1.p2.2.m2.1.1.2">1</cn><ci id="S4.SS1.p2.2.m2.1.1.3.cmml" xref="S4.SS1.p2.2.m2.1.1.3">𝑒</ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p2.2.m2.1c">1e</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p2.2.m2.1d">1 italic_e</annotation></semantics></math>-1.
+ The best performance is achieved when setting the learning rate to 
+0.01, with a momentum of 0.9. Another influential factor is the number 
+of epochs. Unfortunately, the exact settings used in the paper are not 
+explicitly provided. Based on the comments within the code, it appears 
+they trained the model for numerous iterations. They specify the maximum
+ steps as <math id="S4.SS1.p2.3.m3.1" class="ltx_Math" alttext="7e" display="inline"><semantics id="S4.SS1.p2.3.m3.1a"><mrow id="S4.SS1.p2.3.m3.1.1" xref="S4.SS1.p2.3.m3.1.1.cmml"><mn id="S4.SS1.p2.3.m3.1.1.2" xref="S4.SS1.p2.3.m3.1.1.2.cmml">7</mn><mo id="S4.SS1.p2.3.m3.1.1.1" xref="S4.SS1.p2.3.m3.1.1.1.cmml">⁢</mo><mi id="S4.SS1.p2.3.m3.1.1.3" xref="S4.SS1.p2.3.m3.1.1.3.cmml">e</mi></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p2.3.m3.1b"><apply id="S4.SS1.p2.3.m3.1.1.cmml" xref="S4.SS1.p2.3.m3.1.1"><times id="S4.SS1.p2.3.m3.1.1.1.cmml" xref="S4.SS1.p2.3.m3.1.1.1"></times><cn type="integer" id="S4.SS1.p2.3.m3.1.1.2.cmml" xref="S4.SS1.p2.3.m3.1.1.2">7</cn><ci id="S4.SS1.p2.3.m3.1.1.3.cmml" xref="S4.SS1.p2.3.m3.1.1.3">𝑒</ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p2.3.m3.1c">7e</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p2.3.m3.1d">7 italic_e</annotation></semantics></math>5,
+ corresponding to the number of iterations (mini-batches). We set the 
+maximum number of epochs to 500, which translates to approximately <math id="S4.SS1.p2.4.m4.1" class="ltx_Math" alttext="128e" display="inline"><semantics id="S4.SS1.p2.4.m4.1a"><mrow id="S4.SS1.p2.4.m4.1.1" xref="S4.SS1.p2.4.m4.1.1.cmml"><mn id="S4.SS1.p2.4.m4.1.1.2" xref="S4.SS1.p2.4.m4.1.1.2.cmml">128</mn><mo id="S4.SS1.p2.4.m4.1.1.1" xref="S4.SS1.p2.4.m4.1.1.1.cmml">⁢</mo><mi id="S4.SS1.p2.4.m4.1.1.3" xref="S4.SS1.p2.4.m4.1.1.3.cmml">e</mi></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p2.4.m4.1b"><apply id="S4.SS1.p2.4.m4.1.1.cmml" xref="S4.SS1.p2.4.m4.1.1"><times id="S4.SS1.p2.4.m4.1.1.1.cmml" xref="S4.SS1.p2.4.m4.1.1.1"></times><cn type="integer" id="S4.SS1.p2.4.m4.1.1.2.cmml" xref="S4.SS1.p2.4.m4.1.1.2">128</cn><ci id="S4.SS1.p2.4.m4.1.1.3.cmml" xref="S4.SS1.p2.4.m4.1.1.3">𝑒</ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p2.4.m4.1c">128e</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p2.4.m4.1d">128 italic_e</annotation></semantics></math>3 iterations (500 times the maximum number of segments, which is 256).</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S4.SS1.p3" class="ltx_para ltx_noindent">
+<p id="S4.SS1.p3.10" class="ltx_p">To have a fair comparison, we keep 
+the model architecture the same as the paper. For the simulated data, we
+ employed an MLP ("feature-MLP") as the feature extractor to be trained 
+by TCL. The segmentation in TCL was the same as in the data generation, 
+and the number of layers was the same in the mixing-MLP and the 
+feature-MLP. We experiment with 5 different settings where the number of
+ layers takes the values <math id="S4.SS1.p3.1.m1.5" class="ltx_Math" alttext="L\in\{1,2,3,4,5\}" display="inline"><semantics id="S4.SS1.p3.1.m1.5a"><mrow id="S4.SS1.p3.1.m1.5.6" xref="S4.SS1.p3.1.m1.5.6.cmml"><mi id="S4.SS1.p3.1.m1.5.6.2" xref="S4.SS1.p3.1.m1.5.6.2.cmml">L</mi><mo id="S4.SS1.p3.1.m1.5.6.1" xref="S4.SS1.p3.1.m1.5.6.1.cmml">∈</mo><mrow id="S4.SS1.p3.1.m1.5.6.3.2" xref="S4.SS1.p3.1.m1.5.6.3.1.cmml"><mo stretchy="false" id="S4.SS1.p3.1.m1.5.6.3.2.1" xref="S4.SS1.p3.1.m1.5.6.3.1.cmml">{</mo><mn id="S4.SS1.p3.1.m1.1.1" xref="S4.SS1.p3.1.m1.1.1.cmml">1</mn><mo id="S4.SS1.p3.1.m1.5.6.3.2.2" xref="S4.SS1.p3.1.m1.5.6.3.1.cmml">,</mo><mn id="S4.SS1.p3.1.m1.2.2" xref="S4.SS1.p3.1.m1.2.2.cmml">2</mn><mo id="S4.SS1.p3.1.m1.5.6.3.2.3" xref="S4.SS1.p3.1.m1.5.6.3.1.cmml">,</mo><mn id="S4.SS1.p3.1.m1.3.3" xref="S4.SS1.p3.1.m1.3.3.cmml">3</mn><mo id="S4.SS1.p3.1.m1.5.6.3.2.4" xref="S4.SS1.p3.1.m1.5.6.3.1.cmml">,</mo><mn id="S4.SS1.p3.1.m1.4.4" xref="S4.SS1.p3.1.m1.4.4.cmml">4</mn><mo id="S4.SS1.p3.1.m1.5.6.3.2.5" xref="S4.SS1.p3.1.m1.5.6.3.1.cmml">,</mo><mn id="S4.SS1.p3.1.m1.5.5" xref="S4.SS1.p3.1.m1.5.5.cmml">5</mn><mo stretchy="false" id="S4.SS1.p3.1.m1.5.6.3.2.6" xref="S4.SS1.p3.1.m1.5.6.3.1.cmml">}</mo></mrow></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p3.1.m1.5b"><apply id="S4.SS1.p3.1.m1.5.6.cmml" xref="S4.SS1.p3.1.m1.5.6"><in id="S4.SS1.p3.1.m1.5.6.1.cmml" xref="S4.SS1.p3.1.m1.5.6.1"></in><ci id="S4.SS1.p3.1.m1.5.6.2.cmml" xref="S4.SS1.p3.1.m1.5.6.2">𝐿</ci><set id="S4.SS1.p3.1.m1.5.6.3.1.cmml" xref="S4.SS1.p3.1.m1.5.6.3.2"><cn type="integer" id="S4.SS1.p3.1.m1.1.1.cmml" xref="S4.SS1.p3.1.m1.1.1">1</cn><cn type="integer" id="S4.SS1.p3.1.m1.2.2.cmml" xref="S4.SS1.p3.1.m1.2.2">2</cn><cn type="integer" id="S4.SS1.p3.1.m1.3.3.cmml" xref="S4.SS1.p3.1.m1.3.3">3</cn><cn type="integer" id="S4.SS1.p3.1.m1.4.4.cmml" xref="S4.SS1.p3.1.m1.4.4">4</cn><cn type="integer" id="S4.SS1.p3.1.m1.5.5.cmml" xref="S4.SS1.p3.1.m1.5.5">5</cn></set></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p3.1.m1.5c">L\in\{1,2,3,4,5\}</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p3.1.m1.5d">italic_L ∈ { 1 , 2 , 3 , 4 , 5 }</annotation></semantics></math>. When <math id="S4.SS1.p3.2.m2.1" class="ltx_Math" alttext="L=1" display="inline"><semantics id="S4.SS1.p3.2.m2.1a"><mrow id="S4.SS1.p3.2.m2.1.1" xref="S4.SS1.p3.2.m2.1.1.cmml"><mi id="S4.SS1.p3.2.m2.1.1.2" xref="S4.SS1.p3.2.m2.1.1.2.cmml">L</mi><mo id="S4.SS1.p3.2.m2.1.1.1" xref="S4.SS1.p3.2.m2.1.1.1.cmml">=</mo><mn id="S4.SS1.p3.2.m2.1.1.3" xref="S4.SS1.p3.2.m2.1.1.3.cmml">1</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p3.2.m2.1b"><apply id="S4.SS1.p3.2.m2.1.1.cmml" xref="S4.SS1.p3.2.m2.1.1"><eq id="S4.SS1.p3.2.m2.1.1.1.cmml" xref="S4.SS1.p3.2.m2.1.1.1"></eq><ci id="S4.SS1.p3.2.m2.1.1.2.cmml" xref="S4.SS1.p3.2.m2.1.1.2">𝐿</ci><cn type="integer" id="S4.SS1.p3.2.m2.1.1.3.cmml" xref="S4.SS1.p3.2.m2.1.1.3">1</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p3.2.m2.1c">L=1</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p3.2.m2.1d">italic_L = 1</annotation></semantics></math>,
+ both the mixing-MLP and the feature-MLP represent a one-layer model, 
+resulting in the observed signals being linear mixtures of the source 
+signals similar to a linear ICA model. For the activation function in 
+the hidden layers, we utilized a "maxout" unit, constructed by 
+determining the maximum across <math id="S4.SS1.p3.3.m3.1" class="ltx_Math" alttext="G=2" display="inline"><semantics id="S4.SS1.p3.3.m3.1a"><mrow id="S4.SS1.p3.3.m3.1.1" xref="S4.SS1.p3.3.m3.1.1.cmml"><mi id="S4.SS1.p3.3.m3.1.1.2" xref="S4.SS1.p3.3.m3.1.1.2.cmml">G</mi><mo id="S4.SS1.p3.3.m3.1.1.1" xref="S4.SS1.p3.3.m3.1.1.1.cmml">=</mo><mn id="S4.SS1.p3.3.m3.1.1.3" xref="S4.SS1.p3.3.m3.1.1.3.cmml">2</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p3.3.m3.1b"><apply id="S4.SS1.p3.3.m3.1.1.cmml" xref="S4.SS1.p3.3.m3.1.1"><eq id="S4.SS1.p3.3.m3.1.1.1.cmml" xref="S4.SS1.p3.3.m3.1.1.1"></eq><ci id="S4.SS1.p3.3.m3.1.1.2.cmml" xref="S4.SS1.p3.3.m3.1.1.2">𝐺</ci><cn type="integer" id="S4.SS1.p3.3.m3.1.1.3.cmml" xref="S4.SS1.p3.3.m3.1.1.3">2</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p3.3.m3.1c">G=2</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p3.3.m3.1d">italic_G = 2</annotation></semantics></math>
+ affine fully connected weight groups. However, the output layer has 
+“absolute value” activation units exclusively. Each layer is initialized
+ randomly from a uniform distribution. Training of the MLP was conducted
+ via back-propagation with a momentum term. To mitigate overfitting, we 
+employed regularization for both the feature-MLP and MLR, using a value 
+of 2 for regularization. For the EEG experiment, we used segments of 
+equal size, of length 1s or 500 data points (500 Hz). We have 5 hidden 
+layers (<math id="S4.SS1.p3.4.m4.1" class="ltx_Math" alttext="L=5" display="inline"><semantics id="S4.SS1.p3.4.m4.1a"><mrow id="S4.SS1.p3.4.m4.1.1" xref="S4.SS1.p3.4.m4.1.1.cmml"><mi id="S4.SS1.p3.4.m4.1.1.2" xref="S4.SS1.p3.4.m4.1.1.2.cmml">L</mi><mo id="S4.SS1.p3.4.m4.1.1.1" xref="S4.SS1.p3.4.m4.1.1.1.cmml">=</mo><mn id="S4.SS1.p3.4.m4.1.1.3" xref="S4.SS1.p3.4.m4.1.1.3.cmml">5</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p3.4.m4.1b"><apply id="S4.SS1.p3.4.m4.1.1.cmml" xref="S4.SS1.p3.4.m4.1.1"><eq id="S4.SS1.p3.4.m4.1.1.1.cmml" xref="S4.SS1.p3.4.m4.1.1.1"></eq><ci id="S4.SS1.p3.4.m4.1.1.2.cmml" xref="S4.SS1.p3.4.m4.1.1.2">𝐿</ci><cn type="integer" id="S4.SS1.p3.4.m4.1.1.3.cmml" xref="S4.SS1.p3.4.m4.1.1.3">5</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p3.4.m4.1c">L=5</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p3.4.m4.1d">italic_L = 5</annotation></semantics></math>). The number of nodes of each hidden layer was a function of <math id="S4.SS1.p3.5.m5.1" class="ltx_Math" alttext="L" display="inline"><semantics id="S4.SS1.p3.5.m5.1a"><mi id="S4.SS1.p3.5.m5.1.1" xref="S4.SS1.p3.5.m5.1.1.cmml">L</mi><annotation-xml encoding="MathML-Content" id="S4.SS1.p3.5.m5.1b"><ci id="S4.SS1.p3.5.m5.1.1.cmml" xref="S4.SS1.p3.5.m5.1.1">𝐿</ci></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p3.5.m5.1c">L</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p3.5.m5.1d">italic_L</annotation></semantics></math>
+ so we always fixed the number of output layer nodes to 10, and 
+increased gradually the number of nodes when going to the earlier layer 
+as <math id="S4.SS1.p3.6.m6.1" class="ltx_Math" alttext="L=1:10" display="inline"><semantics id="S4.SS1.p3.6.m6.1a"><mrow id="S4.SS1.p3.6.m6.1.1" xref="S4.SS1.p3.6.m6.1.1.cmml"><mrow id="S4.SS1.p3.6.m6.1.1.2" xref="S4.SS1.p3.6.m6.1.1.2.cmml"><mi id="S4.SS1.p3.6.m6.1.1.2.2" xref="S4.SS1.p3.6.m6.1.1.2.2.cmml">L</mi><mo id="S4.SS1.p3.6.m6.1.1.2.1" xref="S4.SS1.p3.6.m6.1.1.2.1.cmml">=</mo><mn id="S4.SS1.p3.6.m6.1.1.2.3" xref="S4.SS1.p3.6.m6.1.1.2.3.cmml">1</mn></mrow><mo lspace="0.278em" rspace="0.278em" id="S4.SS1.p3.6.m6.1.1.1" xref="S4.SS1.p3.6.m6.1.1.1.cmml">:</mo><mn id="S4.SS1.p3.6.m6.1.1.3" xref="S4.SS1.p3.6.m6.1.1.3.cmml">10</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p3.6.m6.1b"><apply id="S4.SS1.p3.6.m6.1.1.cmml" xref="S4.SS1.p3.6.m6.1.1"><ci id="S4.SS1.p3.6.m6.1.1.1.cmml" xref="S4.SS1.p3.6.m6.1.1.1">:</ci><apply id="S4.SS1.p3.6.m6.1.1.2.cmml" xref="S4.SS1.p3.6.m6.1.1.2"><eq id="S4.SS1.p3.6.m6.1.1.2.1.cmml" xref="S4.SS1.p3.6.m6.1.1.2.1"></eq><ci id="S4.SS1.p3.6.m6.1.1.2.2.cmml" xref="S4.SS1.p3.6.m6.1.1.2.2">𝐿</ci><cn type="integer" id="S4.SS1.p3.6.m6.1.1.2.3.cmml" xref="S4.SS1.p3.6.m6.1.1.2.3">1</cn></apply><cn type="integer" id="S4.SS1.p3.6.m6.1.1.3.cmml" xref="S4.SS1.p3.6.m6.1.1.3">10</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p3.6.m6.1c">L=1:10</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p3.6.m6.1d">italic_L = 1 : 10</annotation></semantics></math>, <math id="S4.SS1.p3.7.m7.1" class="ltx_Math" alttext="L=2:20-10" display="inline"><semantics id="S4.SS1.p3.7.m7.1a"><mrow id="S4.SS1.p3.7.m7.1.1" xref="S4.SS1.p3.7.m7.1.1.cmml"><mrow id="S4.SS1.p3.7.m7.1.1.2" xref="S4.SS1.p3.7.m7.1.1.2.cmml"><mi id="S4.SS1.p3.7.m7.1.1.2.2" xref="S4.SS1.p3.7.m7.1.1.2.2.cmml">L</mi><mo id="S4.SS1.p3.7.m7.1.1.2.1" xref="S4.SS1.p3.7.m7.1.1.2.1.cmml">=</mo><mn id="S4.SS1.p3.7.m7.1.1.2.3" xref="S4.SS1.p3.7.m7.1.1.2.3.cmml">2</mn></mrow><mo lspace="0.278em" rspace="0.278em" id="S4.SS1.p3.7.m7.1.1.1" xref="S4.SS1.p3.7.m7.1.1.1.cmml">:</mo><mrow id="S4.SS1.p3.7.m7.1.1.3" xref="S4.SS1.p3.7.m7.1.1.3.cmml"><mn id="S4.SS1.p3.7.m7.1.1.3.2" xref="S4.SS1.p3.7.m7.1.1.3.2.cmml">20</mn><mo id="S4.SS1.p3.7.m7.1.1.3.1" xref="S4.SS1.p3.7.m7.1.1.3.1.cmml">−</mo><mn id="S4.SS1.p3.7.m7.1.1.3.3" xref="S4.SS1.p3.7.m7.1.1.3.3.cmml">10</mn></mrow></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p3.7.m7.1b"><apply id="S4.SS1.p3.7.m7.1.1.cmml" xref="S4.SS1.p3.7.m7.1.1"><ci id="S4.SS1.p3.7.m7.1.1.1.cmml" xref="S4.SS1.p3.7.m7.1.1.1">:</ci><apply id="S4.SS1.p3.7.m7.1.1.2.cmml" xref="S4.SS1.p3.7.m7.1.1.2"><eq id="S4.SS1.p3.7.m7.1.1.2.1.cmml" xref="S4.SS1.p3.7.m7.1.1.2.1"></eq><ci id="S4.SS1.p3.7.m7.1.1.2.2.cmml" xref="S4.SS1.p3.7.m7.1.1.2.2">𝐿</ci><cn type="integer" id="S4.SS1.p3.7.m7.1.1.2.3.cmml" xref="S4.SS1.p3.7.m7.1.1.2.3">2</cn></apply><apply id="S4.SS1.p3.7.m7.1.1.3.cmml" xref="S4.SS1.p3.7.m7.1.1.3"><minus id="S4.SS1.p3.7.m7.1.1.3.1.cmml" xref="S4.SS1.p3.7.m7.1.1.3.1"></minus><cn type="integer" id="S4.SS1.p3.7.m7.1.1.3.2.cmml" xref="S4.SS1.p3.7.m7.1.1.3.2">20</cn><cn type="integer" id="S4.SS1.p3.7.m7.1.1.3.3.cmml" xref="S4.SS1.p3.7.m7.1.1.3.3">10</cn></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p3.7.m7.1c">L=2:20-10</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p3.7.m7.1d">italic_L = 2 : 20 - 10</annotation></semantics></math>, <math id="S4.SS1.p3.8.m8.1" class="ltx_Math" alttext="L=3:40-20-10" display="inline"><semantics id="S4.SS1.p3.8.m8.1a"><mrow id="S4.SS1.p3.8.m8.1.1" xref="S4.SS1.p3.8.m8.1.1.cmml"><mrow id="S4.SS1.p3.8.m8.1.1.2" xref="S4.SS1.p3.8.m8.1.1.2.cmml"><mi id="S4.SS1.p3.8.m8.1.1.2.2" xref="S4.SS1.p3.8.m8.1.1.2.2.cmml">L</mi><mo id="S4.SS1.p3.8.m8.1.1.2.1" xref="S4.SS1.p3.8.m8.1.1.2.1.cmml">=</mo><mn id="S4.SS1.p3.8.m8.1.1.2.3" xref="S4.SS1.p3.8.m8.1.1.2.3.cmml">3</mn></mrow><mo lspace="0.278em" rspace="0.278em" id="S4.SS1.p3.8.m8.1.1.1" xref="S4.SS1.p3.8.m8.1.1.1.cmml">:</mo><mrow id="S4.SS1.p3.8.m8.1.1.3" xref="S4.SS1.p3.8.m8.1.1.3.cmml"><mn id="S4.SS1.p3.8.m8.1.1.3.2" xref="S4.SS1.p3.8.m8.1.1.3.2.cmml">40</mn><mo id="S4.SS1.p3.8.m8.1.1.3.1" xref="S4.SS1.p3.8.m8.1.1.3.1.cmml">−</mo><mn id="S4.SS1.p3.8.m8.1.1.3.3" xref="S4.SS1.p3.8.m8.1.1.3.3.cmml">20</mn><mo id="S4.SS1.p3.8.m8.1.1.3.1a" xref="S4.SS1.p3.8.m8.1.1.3.1.cmml">−</mo><mn id="S4.SS1.p3.8.m8.1.1.3.4" xref="S4.SS1.p3.8.m8.1.1.3.4.cmml">10</mn></mrow></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p3.8.m8.1b"><apply id="S4.SS1.p3.8.m8.1.1.cmml" xref="S4.SS1.p3.8.m8.1.1"><ci id="S4.SS1.p3.8.m8.1.1.1.cmml" xref="S4.SS1.p3.8.m8.1.1.1">:</ci><apply id="S4.SS1.p3.8.m8.1.1.2.cmml" xref="S4.SS1.p3.8.m8.1.1.2"><eq id="S4.SS1.p3.8.m8.1.1.2.1.cmml" xref="S4.SS1.p3.8.m8.1.1.2.1"></eq><ci id="S4.SS1.p3.8.m8.1.1.2.2.cmml" xref="S4.SS1.p3.8.m8.1.1.2.2">𝐿</ci><cn type="integer" id="S4.SS1.p3.8.m8.1.1.2.3.cmml" xref="S4.SS1.p3.8.m8.1.1.2.3">3</cn></apply><apply id="S4.SS1.p3.8.m8.1.1.3.cmml" xref="S4.SS1.p3.8.m8.1.1.3"><minus id="S4.SS1.p3.8.m8.1.1.3.1.cmml" xref="S4.SS1.p3.8.m8.1.1.3.1"></minus><cn type="integer" id="S4.SS1.p3.8.m8.1.1.3.2.cmml" xref="S4.SS1.p3.8.m8.1.1.3.2">40</cn><cn type="integer" id="S4.SS1.p3.8.m8.1.1.3.3.cmml" xref="S4.SS1.p3.8.m8.1.1.3.3">20</cn><cn type="integer" id="S4.SS1.p3.8.m8.1.1.3.4.cmml" xref="S4.SS1.p3.8.m8.1.1.3.4">10</cn></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p3.8.m8.1c">L=3:40-20-10</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p3.8.m8.1d">italic_L = 3 : 40 - 20 - 10</annotation></semantics></math>, and <math id="S4.SS1.p3.9.m9.1" class="ltx_Math" alttext="L=4:80-40-20-10" display="inline"><semantics id="S4.SS1.p3.9.m9.1a"><mrow id="S4.SS1.p3.9.m9.1.1" xref="S4.SS1.p3.9.m9.1.1.cmml"><mrow id="S4.SS1.p3.9.m9.1.1.2" xref="S4.SS1.p3.9.m9.1.1.2.cmml"><mi id="S4.SS1.p3.9.m9.1.1.2.2" xref="S4.SS1.p3.9.m9.1.1.2.2.cmml">L</mi><mo id="S4.SS1.p3.9.m9.1.1.2.1" xref="S4.SS1.p3.9.m9.1.1.2.1.cmml">=</mo><mn id="S4.SS1.p3.9.m9.1.1.2.3" xref="S4.SS1.p3.9.m9.1.1.2.3.cmml">4</mn></mrow><mo lspace="0.278em" rspace="0.278em" id="S4.SS1.p3.9.m9.1.1.1" xref="S4.SS1.p3.9.m9.1.1.1.cmml">:</mo><mrow id="S4.SS1.p3.9.m9.1.1.3" xref="S4.SS1.p3.9.m9.1.1.3.cmml"><mn id="S4.SS1.p3.9.m9.1.1.3.2" xref="S4.SS1.p3.9.m9.1.1.3.2.cmml">80</mn><mo id="S4.SS1.p3.9.m9.1.1.3.1" xref="S4.SS1.p3.9.m9.1.1.3.1.cmml">−</mo><mn id="S4.SS1.p3.9.m9.1.1.3.3" xref="S4.SS1.p3.9.m9.1.1.3.3.cmml">40</mn><mo id="S4.SS1.p3.9.m9.1.1.3.1a" xref="S4.SS1.p3.9.m9.1.1.3.1.cmml">−</mo><mn id="S4.SS1.p3.9.m9.1.1.3.4" xref="S4.SS1.p3.9.m9.1.1.3.4.cmml">20</mn><mo id="S4.SS1.p3.9.m9.1.1.3.1b" xref="S4.SS1.p3.9.m9.1.1.3.1.cmml">−</mo><mn id="S4.SS1.p3.9.m9.1.1.3.5" xref="S4.SS1.p3.9.m9.1.1.3.5.cmml">10</mn></mrow></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p3.9.m9.1b"><apply id="S4.SS1.p3.9.m9.1.1.cmml" xref="S4.SS1.p3.9.m9.1.1"><ci id="S4.SS1.p3.9.m9.1.1.1.cmml" xref="S4.SS1.p3.9.m9.1.1.1">:</ci><apply id="S4.SS1.p3.9.m9.1.1.2.cmml" xref="S4.SS1.p3.9.m9.1.1.2"><eq id="S4.SS1.p3.9.m9.1.1.2.1.cmml" xref="S4.SS1.p3.9.m9.1.1.2.1"></eq><ci id="S4.SS1.p3.9.m9.1.1.2.2.cmml" xref="S4.SS1.p3.9.m9.1.1.2.2">𝐿</ci><cn type="integer" id="S4.SS1.p3.9.m9.1.1.2.3.cmml" xref="S4.SS1.p3.9.m9.1.1.2.3">4</cn></apply><apply id="S4.SS1.p3.9.m9.1.1.3.cmml" xref="S4.SS1.p3.9.m9.1.1.3"><minus id="S4.SS1.p3.9.m9.1.1.3.1.cmml" xref="S4.SS1.p3.9.m9.1.1.3.1"></minus><cn type="integer" id="S4.SS1.p3.9.m9.1.1.3.2.cmml" xref="S4.SS1.p3.9.m9.1.1.3.2">80</cn><cn type="integer" id="S4.SS1.p3.9.m9.1.1.3.3.cmml" xref="S4.SS1.p3.9.m9.1.1.3.3">40</cn><cn type="integer" id="S4.SS1.p3.9.m9.1.1.3.4.cmml" xref="S4.SS1.p3.9.m9.1.1.3.4">20</cn><cn type="integer" id="S4.SS1.p3.9.m9.1.1.3.5.cmml" xref="S4.SS1.p3.9.m9.1.1.3.5">10</cn></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p3.9.m9.1c">L=4:80-40-20-10</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p3.9.m9.1d">italic_L = 4 : 80 - 40 - 20 - 10</annotation></semantics></math>. We used ReLU units in the middle layers and adaptive units <math id="S4.SS1.p3.10.m10.4" class="ltx_Math" alttext="\phi(x)=\max(x,ax)" display="inline"><semantics id="S4.SS1.p3.10.m10.4a"><mrow id="S4.SS1.p3.10.m10.4.4" xref="S4.SS1.p3.10.m10.4.4.cmml"><mrow id="S4.SS1.p3.10.m10.4.4.3" xref="S4.SS1.p3.10.m10.4.4.3.cmml"><mi id="S4.SS1.p3.10.m10.4.4.3.2" xref="S4.SS1.p3.10.m10.4.4.3.2.cmml">ϕ</mi><mo id="S4.SS1.p3.10.m10.4.4.3.1" xref="S4.SS1.p3.10.m10.4.4.3.1.cmml">⁢</mo><mrow id="S4.SS1.p3.10.m10.4.4.3.3.2" xref="S4.SS1.p3.10.m10.4.4.3.cmml"><mo stretchy="false" id="S4.SS1.p3.10.m10.4.4.3.3.2.1" xref="S4.SS1.p3.10.m10.4.4.3.cmml">(</mo><mi id="S4.SS1.p3.10.m10.1.1" xref="S4.SS1.p3.10.m10.1.1.cmml">x</mi><mo stretchy="false" id="S4.SS1.p3.10.m10.4.4.3.3.2.2" xref="S4.SS1.p3.10.m10.4.4.3.cmml">)</mo></mrow></mrow><mo id="S4.SS1.p3.10.m10.4.4.2" xref="S4.SS1.p3.10.m10.4.4.2.cmml">=</mo><mrow id="S4.SS1.p3.10.m10.4.4.1.1" xref="S4.SS1.p3.10.m10.4.4.1.2.cmml"><mi id="S4.SS1.p3.10.m10.2.2" xref="S4.SS1.p3.10.m10.2.2.cmml">max</mi><mo id="S4.SS1.p3.10.m10.4.4.1.1a" xref="S4.SS1.p3.10.m10.4.4.1.2.cmml">⁡</mo><mrow id="S4.SS1.p3.10.m10.4.4.1.1.1" xref="S4.SS1.p3.10.m10.4.4.1.2.cmml"><mo stretchy="false" id="S4.SS1.p3.10.m10.4.4.1.1.1.2" xref="S4.SS1.p3.10.m10.4.4.1.2.cmml">(</mo><mi id="S4.SS1.p3.10.m10.3.3" xref="S4.SS1.p3.10.m10.3.3.cmml">x</mi><mo id="S4.SS1.p3.10.m10.4.4.1.1.1.3" xref="S4.SS1.p3.10.m10.4.4.1.2.cmml">,</mo><mrow id="S4.SS1.p3.10.m10.4.4.1.1.1.1" xref="S4.SS1.p3.10.m10.4.4.1.1.1.1.cmml"><mi id="S4.SS1.p3.10.m10.4.4.1.1.1.1.2" xref="S4.SS1.p3.10.m10.4.4.1.1.1.1.2.cmml">a</mi><mo id="S4.SS1.p3.10.m10.4.4.1.1.1.1.1" xref="S4.SS1.p3.10.m10.4.4.1.1.1.1.1.cmml">⁢</mo><mi id="S4.SS1.p3.10.m10.4.4.1.1.1.1.3" xref="S4.SS1.p3.10.m10.4.4.1.1.1.1.3.cmml">x</mi></mrow><mo stretchy="false" id="S4.SS1.p3.10.m10.4.4.1.1.1.4" xref="S4.SS1.p3.10.m10.4.4.1.2.cmml">)</mo></mrow></mrow></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p3.10.m10.4b"><apply id="S4.SS1.p3.10.m10.4.4.cmml" xref="S4.SS1.p3.10.m10.4.4"><eq id="S4.SS1.p3.10.m10.4.4.2.cmml" xref="S4.SS1.p3.10.m10.4.4.2"></eq><apply id="S4.SS1.p3.10.m10.4.4.3.cmml" xref="S4.SS1.p3.10.m10.4.4.3"><times id="S4.SS1.p3.10.m10.4.4.3.1.cmml" xref="S4.SS1.p3.10.m10.4.4.3.1"></times><ci id="S4.SS1.p3.10.m10.4.4.3.2.cmml" xref="S4.SS1.p3.10.m10.4.4.3.2">italic-ϕ</ci><ci id="S4.SS1.p3.10.m10.1.1.cmml" xref="S4.SS1.p3.10.m10.1.1">𝑥</ci></apply><apply id="S4.SS1.p3.10.m10.4.4.1.2.cmml" xref="S4.SS1.p3.10.m10.4.4.1.1"><max id="S4.SS1.p3.10.m10.2.2.cmml" xref="S4.SS1.p3.10.m10.2.2"></max><ci id="S4.SS1.p3.10.m10.3.3.cmml" xref="S4.SS1.p3.10.m10.3.3">𝑥</ci><apply id="S4.SS1.p3.10.m10.4.4.1.1.1.1.cmml" xref="S4.SS1.p3.10.m10.4.4.1.1.1.1"><times id="S4.SS1.p3.10.m10.4.4.1.1.1.1.1.cmml" xref="S4.SS1.p3.10.m10.4.4.1.1.1.1.1"></times><ci id="S4.SS1.p3.10.m10.4.4.1.1.1.1.2.cmml" xref="S4.SS1.p3.10.m10.4.4.1.1.1.1.2">𝑎</ci><ci id="S4.SS1.p3.10.m10.4.4.1.1.1.1.3.cmml" xref="S4.SS1.p3.10.m10.4.4.1.1.1.1.3">𝑥</ci></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p3.10.m10.4c">\phi(x)=\max(x,ax)</annotation><annotation encoding="application/x-llamapun" id="S4.SS1.p3.10.m10.4d">italic_ϕ ( italic_x ) = roman_max ( italic_x , italic_a italic_x )</annotation></semantics></math> exclusively for the output layer.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section id="S4.SS2" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.2 </span>Data Preparation</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S4.SS2.p1" class="ltx_para ltx_noindent">
+<p id="S4.SS2.p1.1" class="ltx_p">The EEG recording is loaded using the MNE-Python library <cite class="ltx_cite ltx_citemacro_cite"><span class="ltx_ref ltx_missing_citation ltx_ref_self">MNE-package</span></cite>,
+ with tools for reading, visualizing, and analyzing EEG data. The 
+recording is first cleaned by dropping the bad channels, as identified 
+in the recording’s info attribute.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S4.SS2.p2" class="ltx_para ltx_noindent">
+<p id="S4.SS2.p2.1" class="ltx_p">The anatomical-based calculation of 
+the ground truth source reconstruction begins with loading the 
+parcellation and inverse matrix (INV) data from the respective files. 
+The parcellation data is a matrix that represents the division of the 
+brain into distinct regions, while the INV matrix is used to transform 
+the sensor data to source space.
+Both EEG recordings and inverse matrices are relatively big and the 
+calculations initially demanded an order of 50 GB of memory for each 
+participant. To address this issue and to improve memory efficiency, we 
+select a specific time slice from the recording. The start and end times
+ are set to 5 and 205 seconds, respectively, resulting in a 200-second 
+window. The recording data is then resampled and converted to a <span id="S4.SS2.p2.1.1" class="ltx_text ltx_font_typewriter">float32</span>
+ data type for further memory efficiency. We slightly reduced the number
+ of picked channels (116 for each participant) but did not reduce the <math id="S4.SS2.p2.1.m1.1" class="ltx_Math" alttext="500" display="inline"><semantics id="S4.SS2.p2.1.m1.1a"><mn id="S4.SS2.p2.1.m1.1.1" xref="S4.SS2.p2.1.m1.1.1.cmml">500</mn><annotation-xml encoding="MathML-Content" id="S4.SS2.p2.1.m1.1b"><cn type="integer" id="S4.SS2.p2.1.m1.1.1.cmml" xref="S4.SS2.p2.1.m1.1.1">500</cn></annotation-xml><annotation encoding="application/x-tex" id="S4.SS2.p2.1.m1.1c">500</annotation><annotation encoding="application/x-llamapun" id="S4.SS2.p2.1.m1.1d">500</annotation></semantics></math> Hz temporal resolution as we suspected this could affect TCL performance drastically.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section id="S4.SS3" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.3 </span>TCL Training</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S4.SS3.p1" class="ltx_para ltx_noindent">
+<p id="S4.SS3.p1.3" class="ltx_p">The workflow is depicted in Fig.&nbsp;<a href="#S4.F1" title="Figure 1 ‣ 4.4 Sparse Prediction Analysis ‣ 4 Methodology ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1</span></a>.
+ We train the TCL model on the sensor data. In the simulated dataset, 
+this corresponds to the signals obtained from the nonlinear mixing 
+function of nonstationary source signals. In the EEG experiment, the 
+sensor data consists of recorded signals that are noisy and mixed. We 
+train our TCL model using the following three steps:</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<ol id="S4.I1" class="ltx_enumerate">
+<li id="S4.I1.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">1.</span> 
+<div id="S4.I1.i1.p1" class="ltx_para">
+<p id="S4.I1.i1.p1.2" class="ltx_p"><span id="S4.I1.i1.p1.2.1" class="ltx_text ltx_font_bold">Segmentation</span>: We divide a multivariate time series <math id="S4.I1.i1.p1.1.m1.1" class="ltx_Math" alttext="x_{t}" display="inline"><semantics id="S4.I1.i1.p1.1.m1.1a"><msub id="S4.I1.i1.p1.1.m1.1.1" xref="S4.I1.i1.p1.1.m1.1.1.cmml"><mi id="S4.I1.i1.p1.1.m1.1.1.2" xref="S4.I1.i1.p1.1.m1.1.1.2.cmml">x</mi><mi id="S4.I1.i1.p1.1.m1.1.1.3" xref="S4.I1.i1.p1.1.m1.1.1.3.cmml">t</mi></msub><annotation-xml encoding="MathML-Content" id="S4.I1.i1.p1.1.m1.1b"><apply id="S4.I1.i1.p1.1.m1.1.1.cmml" xref="S4.I1.i1.p1.1.m1.1.1"><csymbol cd="ambiguous" id="S4.I1.i1.p1.1.m1.1.1.1.cmml" xref="S4.I1.i1.p1.1.m1.1.1">subscript</csymbol><ci id="S4.I1.i1.p1.1.m1.1.1.2.cmml" xref="S4.I1.i1.p1.1.m1.1.1.2">𝑥</ci><ci id="S4.I1.i1.p1.1.m1.1.1.3.cmml" xref="S4.I1.i1.p1.1.m1.1.1.3">𝑡</ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.I1.i1.p1.1.m1.1c">x_{t}</annotation><annotation encoding="application/x-llamapun" id="S4.I1.i1.p1.1.m1.1d">italic_x start_POSTSUBSCRIPT italic_t end_POSTSUBSCRIPT</annotation></semantics></math> into segments, or time windows, indexed by <math id="S4.I1.i1.p1.2.m2.3" class="ltx_Math" alttext="\tau=1,\dots,T" display="inline"><semantics id="S4.I1.i1.p1.2.m2.3a"><mrow id="S4.I1.i1.p1.2.m2.3.4" xref="S4.I1.i1.p1.2.m2.3.4.cmml"><mi id="S4.I1.i1.p1.2.m2.3.4.2" xref="S4.I1.i1.p1.2.m2.3.4.2.cmml">τ</mi><mo id="S4.I1.i1.p1.2.m2.3.4.1" xref="S4.I1.i1.p1.2.m2.3.4.1.cmml">=</mo><mrow id="S4.I1.i1.p1.2.m2.3.4.3.2" xref="S4.I1.i1.p1.2.m2.3.4.3.1.cmml"><mn id="S4.I1.i1.p1.2.m2.1.1" xref="S4.I1.i1.p1.2.m2.1.1.cmml">1</mn><mo id="S4.I1.i1.p1.2.m2.3.4.3.2.1" xref="S4.I1.i1.p1.2.m2.3.4.3.1.cmml">,</mo><mi mathvariant="normal" id="S4.I1.i1.p1.2.m2.2.2" xref="S4.I1.i1.p1.2.m2.2.2.cmml">…</mi><mo id="S4.I1.i1.p1.2.m2.3.4.3.2.2" xref="S4.I1.i1.p1.2.m2.3.4.3.1.cmml">,</mo><mi id="S4.I1.i1.p1.2.m2.3.3" xref="S4.I1.i1.p1.2.m2.3.3.cmml">T</mi></mrow></mrow><annotation-xml encoding="MathML-Content" id="S4.I1.i1.p1.2.m2.3b"><apply id="S4.I1.i1.p1.2.m2.3.4.cmml" xref="S4.I1.i1.p1.2.m2.3.4"><eq id="S4.I1.i1.p1.2.m2.3.4.1.cmml" xref="S4.I1.i1.p1.2.m2.3.4.1"></eq><ci id="S4.I1.i1.p1.2.m2.3.4.2.cmml" xref="S4.I1.i1.p1.2.m2.3.4.2">𝜏</ci><list id="S4.I1.i1.p1.2.m2.3.4.3.1.cmml" xref="S4.I1.i1.p1.2.m2.3.4.3.2"><cn type="integer" id="S4.I1.i1.p1.2.m2.1.1.cmml" xref="S4.I1.i1.p1.2.m2.1.1">1</cn><ci id="S4.I1.i1.p1.2.m2.2.2.cmml" xref="S4.I1.i1.p1.2.m2.2.2">…</ci><ci id="S4.I1.i1.p1.2.m2.3.3.cmml" xref="S4.I1.i1.p1.2.m2.3.3">𝑇</ci></list></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.I1.i1.p1.2.m2.3c">\tau=1,\dots,T</annotation><annotation encoding="application/x-llamapun" id="S4.I1.i1.p1.2.m2.3d">italic_τ = 1 , … , italic_T</annotation></semantics></math> (number of segments).</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S4.I1.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">2.</span> 
+<div id="S4.I1.i2.p1" class="ltx_para">
+<p id="S4.I1.i2.p1.3" class="ltx_p"><span id="S4.I1.i2.p1.3.1" class="ltx_text ltx_font_bold">Indexing</span>: Each data point is associated with the corresponding segment index <math id="S4.I1.i2.p1.1.m1.1" class="ltx_Math" alttext="\tau" display="inline"><semantics id="S4.I1.i2.p1.1.m1.1a"><mi id="S4.I1.i2.p1.1.m1.1.1" xref="S4.I1.i2.p1.1.m1.1.1.cmml">τ</mi><annotation-xml encoding="MathML-Content" id="S4.I1.i2.p1.1.m1.1b"><ci id="S4.I1.i2.p1.1.m1.1.1.cmml" xref="S4.I1.i2.p1.1.m1.1.1">𝜏</ci></annotation-xml><annotation encoding="application/x-tex" id="S4.I1.i2.p1.1.m1.1c">\tau</annotation><annotation encoding="application/x-llamapun" id="S4.I1.i2.p1.1.m1.1d">italic_τ</annotation></semantics></math> in which it is contained. This ensures that all data points within a segment <math id="S4.I1.i2.p1.2.m2.1" class="ltx_Math" alttext="\tau" display="inline"><semantics id="S4.I1.i2.p1.2.m2.1a"><mi id="S4.I1.i2.p1.2.m2.1.1" xref="S4.I1.i2.p1.2.m2.1.1.cmml">τ</mi><annotation-xml encoding="MathML-Content" id="S4.I1.i2.p1.2.m2.1b"><ci id="S4.I1.i2.p1.2.m2.1.1.cmml" xref="S4.I1.i2.p1.2.m2.1.1">𝜏</ci></annotation-xml><annotation encoding="application/x-tex" id="S4.I1.i2.p1.2.m2.1c">\tau</annotation><annotation encoding="application/x-llamapun" id="S4.I1.i2.p1.2.m2.1d">italic_τ</annotation></semantics></math> are labeled with the same segment label <math id="S4.I1.i2.p1.3.m3.1" class="ltx_Math" alttext="\tau" display="inline"><semantics id="S4.I1.i2.p1.3.m3.1a"><mi id="S4.I1.i2.p1.3.m3.1.1" xref="S4.I1.i2.p1.3.m3.1.1.cmml">τ</mi><annotation-xml encoding="MathML-Content" id="S4.I1.i2.p1.3.m3.1b"><ci id="S4.I1.i2.p1.3.m3.1.1.cmml" xref="S4.I1.i2.p1.3.m3.1.1">𝜏</ci></annotation-xml><annotation encoding="application/x-tex" id="S4.I1.i2.p1.3.m3.1c">\tau</annotation><annotation encoding="application/x-llamapun" id="S4.I1.i2.p1.3.m3.1d">italic_τ</annotation></semantics></math>.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S4.I1.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">3.</span> 
+<div id="S4.I1.i3.p1" class="ltx_para ltx_noindent">
+<p id="S4.I1.i3.p1.4" class="ltx_p"><span id="S4.I1.i3.p1.4.1" class="ltx_text ltx_font_bold">Feature extraction and classification</span>: We learn a feature extractor <math id="S4.I1.i3.p1.1.m1.2" class="ltx_Math" alttext="h(x_{t};\theta)" display="inline"><semantics id="S4.I1.i3.p1.1.m1.2a"><mrow id="S4.I1.i3.p1.1.m1.2.2" xref="S4.I1.i3.p1.1.m1.2.2.cmml"><mi id="S4.I1.i3.p1.1.m1.2.2.3" xref="S4.I1.i3.p1.1.m1.2.2.3.cmml">h</mi><mo id="S4.I1.i3.p1.1.m1.2.2.2" xref="S4.I1.i3.p1.1.m1.2.2.2.cmml">⁢</mo><mrow id="S4.I1.i3.p1.1.m1.2.2.1.1" xref="S4.I1.i3.p1.1.m1.2.2.1.2.cmml"><mo stretchy="false" id="S4.I1.i3.p1.1.m1.2.2.1.1.2" xref="S4.I1.i3.p1.1.m1.2.2.1.2.cmml">(</mo><msub id="S4.I1.i3.p1.1.m1.2.2.1.1.1" xref="S4.I1.i3.p1.1.m1.2.2.1.1.1.cmml"><mi id="S4.I1.i3.p1.1.m1.2.2.1.1.1.2" xref="S4.I1.i3.p1.1.m1.2.2.1.1.1.2.cmml">x</mi><mi id="S4.I1.i3.p1.1.m1.2.2.1.1.1.3" xref="S4.I1.i3.p1.1.m1.2.2.1.1.1.3.cmml">t</mi></msub><mo id="S4.I1.i3.p1.1.m1.2.2.1.1.3" xref="S4.I1.i3.p1.1.m1.2.2.1.2.cmml">;</mo><mi id="S4.I1.i3.p1.1.m1.1.1" xref="S4.I1.i3.p1.1.m1.1.1.cmml">θ</mi><mo stretchy="false" id="S4.I1.i3.p1.1.m1.2.2.1.1.4" xref="S4.I1.i3.p1.1.m1.2.2.1.2.cmml">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content" id="S4.I1.i3.p1.1.m1.2b"><apply id="S4.I1.i3.p1.1.m1.2.2.cmml" xref="S4.I1.i3.p1.1.m1.2.2"><times id="S4.I1.i3.p1.1.m1.2.2.2.cmml" xref="S4.I1.i3.p1.1.m1.2.2.2"></times><ci id="S4.I1.i3.p1.1.m1.2.2.3.cmml" xref="S4.I1.i3.p1.1.m1.2.2.3">ℎ</ci><list id="S4.I1.i3.p1.1.m1.2.2.1.2.cmml" xref="S4.I1.i3.p1.1.m1.2.2.1.1"><apply id="S4.I1.i3.p1.1.m1.2.2.1.1.1.cmml" xref="S4.I1.i3.p1.1.m1.2.2.1.1.1"><csymbol cd="ambiguous" id="S4.I1.i3.p1.1.m1.2.2.1.1.1.1.cmml" xref="S4.I1.i3.p1.1.m1.2.2.1.1.1">subscript</csymbol><ci id="S4.I1.i3.p1.1.m1.2.2.1.1.1.2.cmml" xref="S4.I1.i3.p1.1.m1.2.2.1.1.1.2">𝑥</ci><ci id="S4.I1.i3.p1.1.m1.2.2.1.1.1.3.cmml" xref="S4.I1.i3.p1.1.m1.2.2.1.1.1.3">𝑡</ci></apply><ci id="S4.I1.i3.p1.1.m1.1.1.cmml" xref="S4.I1.i3.p1.1.m1.1.1">𝜃</ci></list></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.I1.i3.p1.1.m1.2c">h(x_{t};\theta)</annotation><annotation encoding="application/x-llamapun" id="S4.I1.i3.p1.1.m1.2d">italic_h ( italic_x start_POSTSUBSCRIPT italic_t end_POSTSUBSCRIPT ; italic_θ )</annotation></semantics></math> with a multilayer perceptron (MLP) and a linear regression function <math id="S4.I1.i3.p1.2.m2.2" class="ltx_Math" alttext="w_{\tau}^{\top}h(x_{t};\theta)+b_{\tau}" display="inline"><semantics id="S4.I1.i3.p1.2.m2.2a"><mrow id="S4.I1.i3.p1.2.m2.2.2" xref="S4.I1.i3.p1.2.m2.2.2.cmml"><mrow id="S4.I1.i3.p1.2.m2.2.2.1" xref="S4.I1.i3.p1.2.m2.2.2.1.cmml"><msubsup id="S4.I1.i3.p1.2.m2.2.2.1.3" xref="S4.I1.i3.p1.2.m2.2.2.1.3.cmml"><mi id="S4.I1.i3.p1.2.m2.2.2.1.3.2.2" xref="S4.I1.i3.p1.2.m2.2.2.1.3.2.2.cmml">w</mi><mi id="S4.I1.i3.p1.2.m2.2.2.1.3.2.3" xref="S4.I1.i3.p1.2.m2.2.2.1.3.2.3.cmml">τ</mi><mo id="S4.I1.i3.p1.2.m2.2.2.1.3.3" xref="S4.I1.i3.p1.2.m2.2.2.1.3.3.cmml">⊤</mo></msubsup><mo id="S4.I1.i3.p1.2.m2.2.2.1.2" xref="S4.I1.i3.p1.2.m2.2.2.1.2.cmml">⁢</mo><mi id="S4.I1.i3.p1.2.m2.2.2.1.4" xref="S4.I1.i3.p1.2.m2.2.2.1.4.cmml">h</mi><mo id="S4.I1.i3.p1.2.m2.2.2.1.2a" xref="S4.I1.i3.p1.2.m2.2.2.1.2.cmml">⁢</mo><mrow id="S4.I1.i3.p1.2.m2.2.2.1.1.1" xref="S4.I1.i3.p1.2.m2.2.2.1.1.2.cmml"><mo stretchy="false" id="S4.I1.i3.p1.2.m2.2.2.1.1.1.2" xref="S4.I1.i3.p1.2.m2.2.2.1.1.2.cmml">(</mo><msub id="S4.I1.i3.p1.2.m2.2.2.1.1.1.1" xref="S4.I1.i3.p1.2.m2.2.2.1.1.1.1.cmml"><mi id="S4.I1.i3.p1.2.m2.2.2.1.1.1.1.2" xref="S4.I1.i3.p1.2.m2.2.2.1.1.1.1.2.cmml">x</mi><mi id="S4.I1.i3.p1.2.m2.2.2.1.1.1.1.3" xref="S4.I1.i3.p1.2.m2.2.2.1.1.1.1.3.cmml">t</mi></msub><mo id="S4.I1.i3.p1.2.m2.2.2.1.1.1.3" xref="S4.I1.i3.p1.2.m2.2.2.1.1.2.cmml">;</mo><mi id="S4.I1.i3.p1.2.m2.1.1" xref="S4.I1.i3.p1.2.m2.1.1.cmml">θ</mi><mo stretchy="false" id="S4.I1.i3.p1.2.m2.2.2.1.1.1.4" xref="S4.I1.i3.p1.2.m2.2.2.1.1.2.cmml">)</mo></mrow></mrow><mo id="S4.I1.i3.p1.2.m2.2.2.2" xref="S4.I1.i3.p1.2.m2.2.2.2.cmml">+</mo><msub id="S4.I1.i3.p1.2.m2.2.2.3" xref="S4.I1.i3.p1.2.m2.2.2.3.cmml"><mi id="S4.I1.i3.p1.2.m2.2.2.3.2" xref="S4.I1.i3.p1.2.m2.2.2.3.2.cmml">b</mi><mi id="S4.I1.i3.p1.2.m2.2.2.3.3" xref="S4.I1.i3.p1.2.m2.2.2.3.3.cmml">τ</mi></msub></mrow><annotation-xml encoding="MathML-Content" id="S4.I1.i3.p1.2.m2.2b"><apply id="S4.I1.i3.p1.2.m2.2.2.cmml" xref="S4.I1.i3.p1.2.m2.2.2"><plus id="S4.I1.i3.p1.2.m2.2.2.2.cmml" xref="S4.I1.i3.p1.2.m2.2.2.2"></plus><apply id="S4.I1.i3.p1.2.m2.2.2.1.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1"><times id="S4.I1.i3.p1.2.m2.2.2.1.2.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.2"></times><apply id="S4.I1.i3.p1.2.m2.2.2.1.3.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.3"><csymbol cd="ambiguous" id="S4.I1.i3.p1.2.m2.2.2.1.3.1.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.3">superscript</csymbol><apply id="S4.I1.i3.p1.2.m2.2.2.1.3.2.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.3"><csymbol cd="ambiguous" id="S4.I1.i3.p1.2.m2.2.2.1.3.2.1.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.3">subscript</csymbol><ci id="S4.I1.i3.p1.2.m2.2.2.1.3.2.2.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.3.2.2">𝑤</ci><ci id="S4.I1.i3.p1.2.m2.2.2.1.3.2.3.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.3.2.3">𝜏</ci></apply><csymbol cd="latexml" id="S4.I1.i3.p1.2.m2.2.2.1.3.3.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.3.3">top</csymbol></apply><ci id="S4.I1.i3.p1.2.m2.2.2.1.4.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.4">ℎ</ci><list id="S4.I1.i3.p1.2.m2.2.2.1.1.2.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.1.1"><apply id="S4.I1.i3.p1.2.m2.2.2.1.1.1.1.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.1.1.1"><csymbol cd="ambiguous" id="S4.I1.i3.p1.2.m2.2.2.1.1.1.1.1.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.1.1.1">subscript</csymbol><ci id="S4.I1.i3.p1.2.m2.2.2.1.1.1.1.2.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.1.1.1.2">𝑥</ci><ci id="S4.I1.i3.p1.2.m2.2.2.1.1.1.1.3.cmml" xref="S4.I1.i3.p1.2.m2.2.2.1.1.1.1.3">𝑡</ci></apply><ci id="S4.I1.i3.p1.2.m2.1.1.cmml" xref="S4.I1.i3.p1.2.m2.1.1">𝜃</ci></list></apply><apply id="S4.I1.i3.p1.2.m2.2.2.3.cmml" xref="S4.I1.i3.p1.2.m2.2.2.3"><csymbol cd="ambiguous" id="S4.I1.i3.p1.2.m2.2.2.3.1.cmml" xref="S4.I1.i3.p1.2.m2.2.2.3">subscript</csymbol><ci id="S4.I1.i3.p1.2.m2.2.2.3.2.cmml" xref="S4.I1.i3.p1.2.m2.2.2.3.2">𝑏</ci><ci id="S4.I1.i3.p1.2.m2.2.2.3.3.cmml" xref="S4.I1.i3.p1.2.m2.2.2.3.3">𝜏</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.I1.i3.p1.2.m2.2c">w_{\tau}^{\top}h(x_{t};\theta)+b_{\tau}</annotation><annotation encoding="application/x-llamapun" id="S4.I1.i3.p1.2.m2.2d">italic_w
+ start_POSTSUBSCRIPT italic_τ end_POSTSUBSCRIPT start_POSTSUPERSCRIPT ⊤ 
+end_POSTSUPERSCRIPT italic_h ( italic_x start_POSTSUBSCRIPT italic_t 
+end_POSTSUBSCRIPT ; italic_θ ) + italic_b start_POSTSUBSCRIPT italic_τ 
+end_POSTSUBSCRIPT</annotation></semantics></math> to classify all data points based on their corresponding segment labels <math id="S4.I1.i3.p1.3.m3.1" class="ltx_Math" alttext="\tau" display="inline"><semantics id="S4.I1.i3.p1.3.m3.1a"><mi id="S4.I1.i3.p1.3.m3.1.1" xref="S4.I1.i3.p1.3.m3.1.1.cmml">τ</mi><annotation-xml encoding="MathML-Content" id="S4.I1.i3.p1.3.m3.1b"><ci id="S4.I1.i3.p1.3.m3.1.1.cmml" xref="S4.I1.i3.p1.3.m3.1.1">𝜏</ci></annotation-xml><annotation encoding="application/x-tex" id="S4.I1.i3.p1.3.m3.1c">\tau</annotation><annotation encoding="application/x-llamapun" id="S4.I1.i3.p1.3.m3.1d">italic_τ</annotation></semantics></math>, used as class labels <math id="S4.I1.i3.p1.4.m4.1" class="ltx_Math" alttext="C_{t}" display="inline"><semantics id="S4.I1.i3.p1.4.m4.1a"><msub id="S4.I1.i3.p1.4.m4.1.1" xref="S4.I1.i3.p1.4.m4.1.1.cmml"><mi id="S4.I1.i3.p1.4.m4.1.1.2" xref="S4.I1.i3.p1.4.m4.1.1.2.cmml">C</mi><mi id="S4.I1.i3.p1.4.m4.1.1.3" xref="S4.I1.i3.p1.4.m4.1.1.3.cmml">t</mi></msub><annotation-xml encoding="MathML-Content" id="S4.I1.i3.p1.4.m4.1b"><apply id="S4.I1.i3.p1.4.m4.1.1.cmml" xref="S4.I1.i3.p1.4.m4.1.1"><csymbol cd="ambiguous" id="S4.I1.i3.p1.4.m4.1.1.1.cmml" xref="S4.I1.i3.p1.4.m4.1.1">subscript</csymbol><ci id="S4.I1.i3.p1.4.m4.1.1.2.cmml" xref="S4.I1.i3.p1.4.m4.1.1.2">𝐶</ci><ci id="S4.I1.i3.p1.4.m4.1.1.3.cmml" xref="S4.I1.i3.p1.4.m4.1.1.3">𝑡</ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.I1.i3.p1.4.m4.1c">C_{t}</annotation><annotation encoding="application/x-llamapun" id="S4.I1.i3.p1.4.m4.1d">italic_C start_POSTSUBSCRIPT italic_t end_POSTSUBSCRIPT</annotation></semantics></math>.
+ The feature extractor is essential for approximating a general 
+nonlinear relationship between the data points and the log-odds of the 
+classes.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+</ol>
+<p id="S4.SS3.p1.2" class="ltx_p">For evaluation purposes, we utilize the source data. In the simulated dataset, this entails nonstationary source signals (<math id="S4.SS3.p1.1.m1.1" class="ltx_Math" alttext="c=20" display="inline"><semantics id="S4.SS3.p1.1.m1.1a"><mrow id="S4.SS3.p1.1.m1.1.1" xref="S4.SS3.p1.1.m1.1.1.cmml"><mi id="S4.SS3.p1.1.m1.1.1.2" xref="S4.SS3.p1.1.m1.1.1.2.cmml">c</mi><mo id="S4.SS3.p1.1.m1.1.1.1" xref="S4.SS3.p1.1.m1.1.1.1.cmml">=</mo><mn id="S4.SS3.p1.1.m1.1.1.3" xref="S4.SS3.p1.1.m1.1.1.3.cmml">20</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.SS3.p1.1.m1.1b"><apply id="S4.SS3.p1.1.m1.1.1.cmml" xref="S4.SS3.p1.1.m1.1.1"><eq id="S4.SS3.p1.1.m1.1.1.1.cmml" xref="S4.SS3.p1.1.m1.1.1.1"></eq><ci id="S4.SS3.p1.1.m1.1.1.2.cmml" xref="S4.SS3.p1.1.m1.1.1.2">𝑐</ci><cn type="integer" id="S4.SS3.p1.1.m1.1.1.3.cmml" xref="S4.SS3.p1.1.m1.1.1.3">20</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS3.p1.1.m1.1c">c=20</annotation><annotation encoding="application/x-llamapun" id="S4.SS3.p1.1.m1.1d">italic_c = 20</annotation></semantics></math>,
+ segment length 512), which were generated randomly by modulating 
+Laplacian sources. In the EEG experiment, the source data comprises the 
+output of the source reconstruction, indicating the relationship between
+ each signal and its corresponding brain region (<math id="S4.SS3.p1.2.m2.1" class="ltx_Math" alttext="c=116" display="inline"><semantics id="S4.SS3.p1.2.m2.1a"><mrow id="S4.SS3.p1.2.m2.1.1" xref="S4.SS3.p1.2.m2.1.1.cmml"><mi id="S4.SS3.p1.2.m2.1.1.2" xref="S4.SS3.p1.2.m2.1.1.2.cmml">c</mi><mo id="S4.SS3.p1.2.m2.1.1.1" xref="S4.SS3.p1.2.m2.1.1.1.cmml">=</mo><mn id="S4.SS3.p1.2.m2.1.1.3" xref="S4.SS3.p1.2.m2.1.1.3.cmml">116</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.SS3.p1.2.m2.1b"><apply id="S4.SS3.p1.2.m2.1.1.cmml" xref="S4.SS3.p1.2.m2.1.1"><eq id="S4.SS3.p1.2.m2.1.1.1.cmml" xref="S4.SS3.p1.2.m2.1.1.1"></eq><ci id="S4.SS3.p1.2.m2.1.1.2.cmml" xref="S4.SS3.p1.2.m2.1.1.2">𝑐</ci><cn type="integer" id="S4.SS3.p1.2.m2.1.1.3.cmml" xref="S4.SS3.p1.2.m2.1.1.3">116</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS3.p1.2.m2.1c">c=116</annotation><annotation encoding="application/x-llamapun" id="S4.SS3.p1.2.m2.1d">italic_c = 116</annotation></semantics></math>, segment length 500).</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section id="S4.SS4" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.4 </span>Sparse Prediction Analysis</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S4.SS4.p1" class="ltx_para">
+<p id="S4.SS4.p1.5" class="ltx_p">We study the canonical correlation 
+analysis between the disentangled representation acquired from TCL and 
+the clean source generated via our source reconstruction method. 
+Initially, we obtain the representation from TCL as <math id="S4.SS4.p1.1.m1.1" class="ltx_Math" alttext="h^{tcl}" display="inline"><semantics id="S4.SS4.p1.1.m1.1a"><msup id="S4.SS4.p1.1.m1.1.1" xref="S4.SS4.p1.1.m1.1.1.cmml"><mi id="S4.SS4.p1.1.m1.1.1.2" xref="S4.SS4.p1.1.m1.1.1.2.cmml">h</mi><mrow id="S4.SS4.p1.1.m1.1.1.3" xref="S4.SS4.p1.1.m1.1.1.3.cmml"><mi id="S4.SS4.p1.1.m1.1.1.3.2" xref="S4.SS4.p1.1.m1.1.1.3.2.cmml">t</mi><mo id="S4.SS4.p1.1.m1.1.1.3.1" xref="S4.SS4.p1.1.m1.1.1.3.1.cmml">⁢</mo><mi id="S4.SS4.p1.1.m1.1.1.3.3" xref="S4.SS4.p1.1.m1.1.1.3.3.cmml">c</mi><mo id="S4.SS4.p1.1.m1.1.1.3.1a" xref="S4.SS4.p1.1.m1.1.1.3.1.cmml">⁢</mo><mi id="S4.SS4.p1.1.m1.1.1.3.4" xref="S4.SS4.p1.1.m1.1.1.3.4.cmml">l</mi></mrow></msup><annotation-xml encoding="MathML-Content" id="S4.SS4.p1.1.m1.1b"><apply id="S4.SS4.p1.1.m1.1.1.cmml" xref="S4.SS4.p1.1.m1.1.1"><csymbol cd="ambiguous" id="S4.SS4.p1.1.m1.1.1.1.cmml" xref="S4.SS4.p1.1.m1.1.1">superscript</csymbol><ci id="S4.SS4.p1.1.m1.1.1.2.cmml" xref="S4.SS4.p1.1.m1.1.1.2">ℎ</ci><apply id="S4.SS4.p1.1.m1.1.1.3.cmml" xref="S4.SS4.p1.1.m1.1.1.3"><times id="S4.SS4.p1.1.m1.1.1.3.1.cmml" xref="S4.SS4.p1.1.m1.1.1.3.1"></times><ci id="S4.SS4.p1.1.m1.1.1.3.2.cmml" xref="S4.SS4.p1.1.m1.1.1.3.2">𝑡</ci><ci id="S4.SS4.p1.1.m1.1.1.3.3.cmml" xref="S4.SS4.p1.1.m1.1.1.3.3">𝑐</ci><ci id="S4.SS4.p1.1.m1.1.1.3.4.cmml" xref="S4.SS4.p1.1.m1.1.1.3.4">𝑙</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS4.p1.1.m1.1c">h^{tcl}</annotation><annotation encoding="application/x-llamapun" id="S4.SS4.p1.1.m1.1d">italic_h start_POSTSUPERSCRIPT italic_t italic_c italic_l end_POSTSUPERSCRIPT</annotation></semantics></math>. Subsequently, we employ PCA on the source data obtained from our clean source, denoted as <math id="S4.SS4.p1.2.m2.1" class="ltx_Math" alttext="h^{r}" display="inline"><semantics id="S4.SS4.p1.2.m2.1a"><msup id="S4.SS4.p1.2.m2.1.1" xref="S4.SS4.p1.2.m2.1.1.cmml"><mi id="S4.SS4.p1.2.m2.1.1.2" xref="S4.SS4.p1.2.m2.1.1.2.cmml">h</mi><mi id="S4.SS4.p1.2.m2.1.1.3" xref="S4.SS4.p1.2.m2.1.1.3.cmml">r</mi></msup><annotation-xml encoding="MathML-Content" id="S4.SS4.p1.2.m2.1b"><apply id="S4.SS4.p1.2.m2.1.1.cmml" xref="S4.SS4.p1.2.m2.1.1"><csymbol cd="ambiguous" id="S4.SS4.p1.2.m2.1.1.1.cmml" xref="S4.SS4.p1.2.m2.1.1">superscript</csymbol><ci id="S4.SS4.p1.2.m2.1.1.2.cmml" xref="S4.SS4.p1.2.m2.1.1.2">ℎ</ci><ci id="S4.SS4.p1.2.m2.1.1.3.cmml" xref="S4.SS4.p1.2.m2.1.1.3">𝑟</ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS4.p1.2.m2.1c">h^{r}</annotation><annotation encoding="application/x-llamapun" id="S4.SS4.p1.2.m2.1d">italic_h start_POSTSUPERSCRIPT italic_r end_POSTSUPERSCRIPT</annotation></semantics></math>,
+ to ensure a one-to-one correspondence between the two embeddings. 
+Following this, we train a linear regression model to predict <math id="S4.SS4.p1.3.m3.1" class="ltx_Math" alttext="h^{r}" display="inline"><semantics id="S4.SS4.p1.3.m3.1a"><msup id="S4.SS4.p1.3.m3.1.1" xref="S4.SS4.p1.3.m3.1.1.cmml"><mi id="S4.SS4.p1.3.m3.1.1.2" xref="S4.SS4.p1.3.m3.1.1.2.cmml">h</mi><mi id="S4.SS4.p1.3.m3.1.1.3" xref="S4.SS4.p1.3.m3.1.1.3.cmml">r</mi></msup><annotation-xml encoding="MathML-Content" id="S4.SS4.p1.3.m3.1b"><apply id="S4.SS4.p1.3.m3.1.1.cmml" xref="S4.SS4.p1.3.m3.1.1"><csymbol cd="ambiguous" id="S4.SS4.p1.3.m3.1.1.1.cmml" xref="S4.SS4.p1.3.m3.1.1">superscript</csymbol><ci id="S4.SS4.p1.3.m3.1.1.2.cmml" xref="S4.SS4.p1.3.m3.1.1.2">ℎ</ci><ci id="S4.SS4.p1.3.m3.1.1.3.cmml" xref="S4.SS4.p1.3.m3.1.1.3">𝑟</ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS4.p1.3.m3.1c">h^{r}</annotation><annotation encoding="application/x-llamapun" id="S4.SS4.p1.3.m3.1d">italic_h start_POSTSUPERSCRIPT italic_r end_POSTSUPERSCRIPT</annotation></semantics></math> from <math id="S4.SS4.p1.4.m4.1" class="ltx_Math" alttext="h^{tcl}" display="inline"><semantics id="S4.SS4.p1.4.m4.1a"><msup id="S4.SS4.p1.4.m4.1.1" xref="S4.SS4.p1.4.m4.1.1.cmml"><mi id="S4.SS4.p1.4.m4.1.1.2" xref="S4.SS4.p1.4.m4.1.1.2.cmml">h</mi><mrow id="S4.SS4.p1.4.m4.1.1.3" xref="S4.SS4.p1.4.m4.1.1.3.cmml"><mi id="S4.SS4.p1.4.m4.1.1.3.2" xref="S4.SS4.p1.4.m4.1.1.3.2.cmml">t</mi><mo id="S4.SS4.p1.4.m4.1.1.3.1" xref="S4.SS4.p1.4.m4.1.1.3.1.cmml">⁢</mo><mi id="S4.SS4.p1.4.m4.1.1.3.3" xref="S4.SS4.p1.4.m4.1.1.3.3.cmml">c</mi><mo id="S4.SS4.p1.4.m4.1.1.3.1a" xref="S4.SS4.p1.4.m4.1.1.3.1.cmml">⁢</mo><mi id="S4.SS4.p1.4.m4.1.1.3.4" xref="S4.SS4.p1.4.m4.1.1.3.4.cmml">l</mi></mrow></msup><annotation-xml encoding="MathML-Content" id="S4.SS4.p1.4.m4.1b"><apply id="S4.SS4.p1.4.m4.1.1.cmml" xref="S4.SS4.p1.4.m4.1.1"><csymbol cd="ambiguous" id="S4.SS4.p1.4.m4.1.1.1.cmml" xref="S4.SS4.p1.4.m4.1.1">superscript</csymbol><ci id="S4.SS4.p1.4.m4.1.1.2.cmml" xref="S4.SS4.p1.4.m4.1.1.2">ℎ</ci><apply id="S4.SS4.p1.4.m4.1.1.3.cmml" xref="S4.SS4.p1.4.m4.1.1.3"><times id="S4.SS4.p1.4.m4.1.1.3.1.cmml" xref="S4.SS4.p1.4.m4.1.1.3.1"></times><ci id="S4.SS4.p1.4.m4.1.1.3.2.cmml" xref="S4.SS4.p1.4.m4.1.1.3.2">𝑡</ci><ci id="S4.SS4.p1.4.m4.1.1.3.3.cmml" xref="S4.SS4.p1.4.m4.1.1.3.3">𝑐</ci><ci id="S4.SS4.p1.4.m4.1.1.3.4.cmml" xref="S4.SS4.p1.4.m4.1.1.3.4">𝑙</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS4.p1.4.m4.1c">h^{tcl}</annotation><annotation encoding="application/x-llamapun" id="S4.SS4.p1.4.m4.1d">italic_h start_POSTSUPERSCRIPT italic_t italic_c italic_l end_POSTSUPERSCRIPT</annotation></semantics></math>.
+ Ideally, this regression matrix should resemble a permutation matrix. 
+However, owing to the imperfect reconstruction of the source 
+reconstruction, we aim to determine if there exists any sparse mapping 
+between these two embeddings. As a baseline comparison, we conduct the 
+same analysis with representations obtained directly from applying PCA 
+on sensor data, referred to as <math id="S4.SS4.p1.5.m5.1" class="ltx_Math" alttext="h^{pca}" display="inline"><semantics id="S4.SS4.p1.5.m5.1a"><msup id="S4.SS4.p1.5.m5.1.1" xref="S4.SS4.p1.5.m5.1.1.cmml"><mi id="S4.SS4.p1.5.m5.1.1.2" xref="S4.SS4.p1.5.m5.1.1.2.cmml">h</mi><mrow id="S4.SS4.p1.5.m5.1.1.3" xref="S4.SS4.p1.5.m5.1.1.3.cmml"><mi id="S4.SS4.p1.5.m5.1.1.3.2" xref="S4.SS4.p1.5.m5.1.1.3.2.cmml">p</mi><mo id="S4.SS4.p1.5.m5.1.1.3.1" xref="S4.SS4.p1.5.m5.1.1.3.1.cmml">⁢</mo><mi id="S4.SS4.p1.5.m5.1.1.3.3" xref="S4.SS4.p1.5.m5.1.1.3.3.cmml">c</mi><mo id="S4.SS4.p1.5.m5.1.1.3.1a" xref="S4.SS4.p1.5.m5.1.1.3.1.cmml">⁢</mo><mi id="S4.SS4.p1.5.m5.1.1.3.4" xref="S4.SS4.p1.5.m5.1.1.3.4.cmml">a</mi></mrow></msup><annotation-xml encoding="MathML-Content" id="S4.SS4.p1.5.m5.1b"><apply id="S4.SS4.p1.5.m5.1.1.cmml" xref="S4.SS4.p1.5.m5.1.1"><csymbol cd="ambiguous" id="S4.SS4.p1.5.m5.1.1.1.cmml" xref="S4.SS4.p1.5.m5.1.1">superscript</csymbol><ci id="S4.SS4.p1.5.m5.1.1.2.cmml" xref="S4.SS4.p1.5.m5.1.1.2">ℎ</ci><apply id="S4.SS4.p1.5.m5.1.1.3.cmml" xref="S4.SS4.p1.5.m5.1.1.3"><times id="S4.SS4.p1.5.m5.1.1.3.1.cmml" xref="S4.SS4.p1.5.m5.1.1.3.1"></times><ci id="S4.SS4.p1.5.m5.1.1.3.2.cmml" xref="S4.SS4.p1.5.m5.1.1.3.2">𝑝</ci><ci id="S4.SS4.p1.5.m5.1.1.3.3.cmml" xref="S4.SS4.p1.5.m5.1.1.3.3">𝑐</ci><ci id="S4.SS4.p1.5.m5.1.1.3.4.cmml" xref="S4.SS4.p1.5.m5.1.1.3.4">𝑎</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS4.p1.5.m5.1c">h^{pca}</annotation><annotation encoding="application/x-llamapun" id="S4.SS4.p1.5.m5.1d">italic_h start_POSTSUPERSCRIPT italic_p italic_c italic_a end_POSTSUPERSCRIPT</annotation></semantics></math>. The correlation is computed as follows:</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<table id="S7.EGx1" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="S4.E1"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S4.E1.m1.2" class="ltx_Math" alttext="\displaystyle\text{Correlation}(h^{tcl},h^{r})" display="inline"><semantics id="S4.E1.m1.2a"><mrow id="S4.E1.m1.2.2" xref="S4.E1.m1.2.2.cmml"><mtext id="S4.E1.m1.2.2.4" xref="S4.E1.m1.2.2.4a.cmml">Correlation</mtext><mo id="S4.E1.m1.2.2.3" xref="S4.E1.m1.2.2.3.cmml">⁢</mo><mrow id="S4.E1.m1.2.2.2.2" xref="S4.E1.m1.2.2.2.3.cmml"><mo stretchy="false" id="S4.E1.m1.2.2.2.2.3" xref="S4.E1.m1.2.2.2.3.cmml">(</mo><msup id="S4.E1.m1.1.1.1.1.1" xref="S4.E1.m1.1.1.1.1.1.cmml"><mi id="S4.E1.m1.1.1.1.1.1.2" xref="S4.E1.m1.1.1.1.1.1.2.cmml">h</mi><mrow id="S4.E1.m1.1.1.1.1.1.3" xref="S4.E1.m1.1.1.1.1.1.3.cmml"><mi id="S4.E1.m1.1.1.1.1.1.3.2" xref="S4.E1.m1.1.1.1.1.1.3.2.cmml">t</mi><mo id="S4.E1.m1.1.1.1.1.1.3.1" xref="S4.E1.m1.1.1.1.1.1.3.1.cmml">⁢</mo><mi id="S4.E1.m1.1.1.1.1.1.3.3" xref="S4.E1.m1.1.1.1.1.1.3.3.cmml">c</mi><mo id="S4.E1.m1.1.1.1.1.1.3.1a" xref="S4.E1.m1.1.1.1.1.1.3.1.cmml">⁢</mo><mi id="S4.E1.m1.1.1.1.1.1.3.4" xref="S4.E1.m1.1.1.1.1.1.3.4.cmml">l</mi></mrow></msup><mo id="S4.E1.m1.2.2.2.2.4" xref="S4.E1.m1.2.2.2.3.cmml">,</mo><msup id="S4.E1.m1.2.2.2.2.2" xref="S4.E1.m1.2.2.2.2.2.cmml"><mi id="S4.E1.m1.2.2.2.2.2.2" xref="S4.E1.m1.2.2.2.2.2.2.cmml">h</mi><mi id="S4.E1.m1.2.2.2.2.2.3" xref="S4.E1.m1.2.2.2.2.2.3.cmml">r</mi></msup><mo stretchy="false" id="S4.E1.m1.2.2.2.2.5" xref="S4.E1.m1.2.2.2.3.cmml">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content" id="S4.E1.m1.2b"><apply id="S4.E1.m1.2.2.cmml" xref="S4.E1.m1.2.2"><times id="S4.E1.m1.2.2.3.cmml" xref="S4.E1.m1.2.2.3"></times><ci id="S4.E1.m1.2.2.4a.cmml" xref="S4.E1.m1.2.2.4"><mtext id="S4.E1.m1.2.2.4.cmml" xref="S4.E1.m1.2.2.4">Correlation</mtext></ci><interval closure="open" id="S4.E1.m1.2.2.2.3.cmml" xref="S4.E1.m1.2.2.2.2"><apply id="S4.E1.m1.1.1.1.1.1.cmml" xref="S4.E1.m1.1.1.1.1.1"><csymbol cd="ambiguous" id="S4.E1.m1.1.1.1.1.1.1.cmml" xref="S4.E1.m1.1.1.1.1.1">superscript</csymbol><ci id="S4.E1.m1.1.1.1.1.1.2.cmml" xref="S4.E1.m1.1.1.1.1.1.2">ℎ</ci><apply id="S4.E1.m1.1.1.1.1.1.3.cmml" xref="S4.E1.m1.1.1.1.1.1.3"><times id="S4.E1.m1.1.1.1.1.1.3.1.cmml" xref="S4.E1.m1.1.1.1.1.1.3.1"></times><ci id="S4.E1.m1.1.1.1.1.1.3.2.cmml" xref="S4.E1.m1.1.1.1.1.1.3.2">𝑡</ci><ci id="S4.E1.m1.1.1.1.1.1.3.3.cmml" xref="S4.E1.m1.1.1.1.1.1.3.3">𝑐</ci><ci id="S4.E1.m1.1.1.1.1.1.3.4.cmml" xref="S4.E1.m1.1.1.1.1.1.3.4">𝑙</ci></apply></apply><apply id="S4.E1.m1.2.2.2.2.2.cmml" xref="S4.E1.m1.2.2.2.2.2"><csymbol cd="ambiguous" id="S4.E1.m1.2.2.2.2.2.1.cmml" xref="S4.E1.m1.2.2.2.2.2">superscript</csymbol><ci id="S4.E1.m1.2.2.2.2.2.2.cmml" xref="S4.E1.m1.2.2.2.2.2.2">ℎ</ci><ci id="S4.E1.m1.2.2.2.2.2.3.cmml" xref="S4.E1.m1.2.2.2.2.2.3">𝑟</ci></apply></interval></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.E1.m1.2c">\displaystyle\text{Correlation}(h^{tcl},h^{r})</annotation><annotation encoding="application/x-llamapun" id="S4.E1.m1.2d">Correlation
+ ( italic_h start_POSTSUPERSCRIPT italic_t italic_c italic_l 
+end_POSTSUPERSCRIPT , italic_h start_POSTSUPERSCRIPT italic_r 
+end_POSTSUPERSCRIPT )</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S4.E1.m2.3" class="ltx_Math" alttext="\displaystyle=f.\text{train}(h^{tcl},h^{r}).\text{coef\_}" display="inline"><semantics id="S4.E1.m2.3a"><mrow id="S4.E1.m2.3.3.2" xref="S4.E1.m2.3.3.3.cmml"><mrow id="S4.E1.m2.2.2.1.1" xref="S4.E1.m2.2.2.1.1.cmml"><mi id="S4.E1.m2.2.2.1.1.2" xref="S4.E1.m2.2.2.1.1.2.cmml"></mi><mo id="S4.E1.m2.2.2.1.1.1" xref="S4.E1.m2.2.2.1.1.1.cmml">=</mo><mi id="S4.E1.m2.2.2.1.1.3" xref="S4.E1.m2.2.2.1.1.3.cmml">f</mi></mrow><mo lspace="0em" rspace="0.167em" id="S4.E1.m2.3.3.2.3" xref="S4.E1.m2.3.3.3a.cmml">.</mo><mrow id="S4.E1.m2.3.3.2.2" xref="S4.E1.m2.3.3.2.2.cmml"><mtext id="S4.E1.m2.3.3.2.2.4" xref="S4.E1.m2.3.3.2.2.4a.cmml">train</mtext><mo id="S4.E1.m2.3.3.2.2.3" xref="S4.E1.m2.3.3.2.2.3.cmml">⁢</mo><mrow id="S4.E1.m2.3.3.2.2.2.2" xref="S4.E1.m2.3.3.2.2.2.3.cmml"><mo stretchy="false" id="S4.E1.m2.3.3.2.2.2.2.3" xref="S4.E1.m2.3.3.2.2.2.3.cmml">(</mo><msup id="S4.E1.m2.3.3.2.2.1.1.1" xref="S4.E1.m2.3.3.2.2.1.1.1.cmml"><mi id="S4.E1.m2.3.3.2.2.1.1.1.2" xref="S4.E1.m2.3.3.2.2.1.1.1.2.cmml">h</mi><mrow id="S4.E1.m2.3.3.2.2.1.1.1.3" xref="S4.E1.m2.3.3.2.2.1.1.1.3.cmml"><mi id="S4.E1.m2.3.3.2.2.1.1.1.3.2" xref="S4.E1.m2.3.3.2.2.1.1.1.3.2.cmml">t</mi><mo id="S4.E1.m2.3.3.2.2.1.1.1.3.1" xref="S4.E1.m2.3.3.2.2.1.1.1.3.1.cmml">⁢</mo><mi id="S4.E1.m2.3.3.2.2.1.1.1.3.3" xref="S4.E1.m2.3.3.2.2.1.1.1.3.3.cmml">c</mi><mo id="S4.E1.m2.3.3.2.2.1.1.1.3.1a" xref="S4.E1.m2.3.3.2.2.1.1.1.3.1.cmml">⁢</mo><mi id="S4.E1.m2.3.3.2.2.1.1.1.3.4" xref="S4.E1.m2.3.3.2.2.1.1.1.3.4.cmml">l</mi></mrow></msup><mo id="S4.E1.m2.3.3.2.2.2.2.4" xref="S4.E1.m2.3.3.2.2.2.3.cmml">,</mo><msup id="S4.E1.m2.3.3.2.2.2.2.2" xref="S4.E1.m2.3.3.2.2.2.2.2.cmml"><mi id="S4.E1.m2.3.3.2.2.2.2.2.2" xref="S4.E1.m2.3.3.2.2.2.2.2.2.cmml">h</mi><mi id="S4.E1.m2.3.3.2.2.2.2.2.3" xref="S4.E1.m2.3.3.2.2.2.2.2.3.cmml">r</mi></msup><mo stretchy="false" id="S4.E1.m2.3.3.2.2.2.2.5" xref="S4.E1.m2.3.3.2.2.2.3.cmml">)</mo></mrow></mrow><mo lspace="0em" rspace="0.167em" id="S4.E1.m2.3.3.2.4" xref="S4.E1.m2.3.3.3a.cmml">.</mo><mtext id="S4.E1.m2.1.1" xref="S4.E1.m2.1.1a.cmml">coef_</mtext></mrow><annotation-xml encoding="MathML-Content" id="S4.E1.m2.3b"><apply id="S4.E1.m2.3.3.3.cmml" xref="S4.E1.m2.3.3.2"><csymbol cd="ambiguous" id="S4.E1.m2.3.3.3a.cmml" xref="S4.E1.m2.3.3.2.3">formulae-sequence</csymbol><apply id="S4.E1.m2.2.2.1.1.cmml" xref="S4.E1.m2.2.2.1.1"><eq id="S4.E1.m2.2.2.1.1.1.cmml" xref="S4.E1.m2.2.2.1.1.1"></eq><csymbol cd="latexml" id="S4.E1.m2.2.2.1.1.2.cmml" xref="S4.E1.m2.2.2.1.1.2">absent</csymbol><ci id="S4.E1.m2.2.2.1.1.3.cmml" xref="S4.E1.m2.2.2.1.1.3">𝑓</ci></apply><apply id="S4.E1.m2.3.3.2.2.cmml" xref="S4.E1.m2.3.3.2.2"><times id="S4.E1.m2.3.3.2.2.3.cmml" xref="S4.E1.m2.3.3.2.2.3"></times><ci id="S4.E1.m2.3.3.2.2.4a.cmml" xref="S4.E1.m2.3.3.2.2.4"><mtext id="S4.E1.m2.3.3.2.2.4.cmml" xref="S4.E1.m2.3.3.2.2.4">train</mtext></ci><interval closure="open" id="S4.E1.m2.3.3.2.2.2.3.cmml" xref="S4.E1.m2.3.3.2.2.2.2"><apply id="S4.E1.m2.3.3.2.2.1.1.1.cmml" xref="S4.E1.m2.3.3.2.2.1.1.1"><csymbol cd="ambiguous" id="S4.E1.m2.3.3.2.2.1.1.1.1.cmml" xref="S4.E1.m2.3.3.2.2.1.1.1">superscript</csymbol><ci id="S4.E1.m2.3.3.2.2.1.1.1.2.cmml" xref="S4.E1.m2.3.3.2.2.1.1.1.2">ℎ</ci><apply id="S4.E1.m2.3.3.2.2.1.1.1.3.cmml" xref="S4.E1.m2.3.3.2.2.1.1.1.3"><times id="S4.E1.m2.3.3.2.2.1.1.1.3.1.cmml" xref="S4.E1.m2.3.3.2.2.1.1.1.3.1"></times><ci id="S4.E1.m2.3.3.2.2.1.1.1.3.2.cmml" xref="S4.E1.m2.3.3.2.2.1.1.1.3.2">𝑡</ci><ci id="S4.E1.m2.3.3.2.2.1.1.1.3.3.cmml" xref="S4.E1.m2.3.3.2.2.1.1.1.3.3">𝑐</ci><ci id="S4.E1.m2.3.3.2.2.1.1.1.3.4.cmml" xref="S4.E1.m2.3.3.2.2.1.1.1.3.4">𝑙</ci></apply></apply><apply id="S4.E1.m2.3.3.2.2.2.2.2.cmml" xref="S4.E1.m2.3.3.2.2.2.2.2"><csymbol cd="ambiguous" id="S4.E1.m2.3.3.2.2.2.2.2.1.cmml" xref="S4.E1.m2.3.3.2.2.2.2.2">superscript</csymbol><ci id="S4.E1.m2.3.3.2.2.2.2.2.2.cmml" xref="S4.E1.m2.3.3.2.2.2.2.2.2">ℎ</ci><ci id="S4.E1.m2.3.3.2.2.2.2.2.3.cmml" xref="S4.E1.m2.3.3.2.2.2.2.2.3">𝑟</ci></apply></interval></apply><ci id="S4.E1.m2.1.1a.cmml" xref="S4.E1.m2.1.1"><mtext id="S4.E1.m2.1.1.cmml" xref="S4.E1.m2.1.1">coef_</mtext></ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.E1.m2.3c">\displaystyle=f.\text{train}(h^{tcl},h^{r}).\text{coef\_}</annotation><annotation encoding="application/x-llamapun" id="S4.E1.m2.3d">=
+ italic_f . train ( italic_h start_POSTSUPERSCRIPT italic_t italic_c 
+italic_l end_POSTSUPERSCRIPT , italic_h start_POSTSUPERSCRIPT italic_r 
+end_POSTSUPERSCRIPT ) . coef_</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1)</span></td>
+</tr></tbody>
+<tbody id="S4.E2"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S4.E2.m1.2" class="ltx_Math" alttext="\displaystyle\text{Correlation}(h^{pca},h^{r})" display="inline"><semantics id="S4.E2.m1.2a"><mrow id="S4.E2.m1.2.2" xref="S4.E2.m1.2.2.cmml"><mtext id="S4.E2.m1.2.2.4" xref="S4.E2.m1.2.2.4a.cmml">Correlation</mtext><mo id="S4.E2.m1.2.2.3" xref="S4.E2.m1.2.2.3.cmml">⁢</mo><mrow id="S4.E2.m1.2.2.2.2" xref="S4.E2.m1.2.2.2.3.cmml"><mo stretchy="false" id="S4.E2.m1.2.2.2.2.3" xref="S4.E2.m1.2.2.2.3.cmml">(</mo><msup id="S4.E2.m1.1.1.1.1.1" xref="S4.E2.m1.1.1.1.1.1.cmml"><mi id="S4.E2.m1.1.1.1.1.1.2" xref="S4.E2.m1.1.1.1.1.1.2.cmml">h</mi><mrow id="S4.E2.m1.1.1.1.1.1.3" xref="S4.E2.m1.1.1.1.1.1.3.cmml"><mi id="S4.E2.m1.1.1.1.1.1.3.2" xref="S4.E2.m1.1.1.1.1.1.3.2.cmml">p</mi><mo id="S4.E2.m1.1.1.1.1.1.3.1" xref="S4.E2.m1.1.1.1.1.1.3.1.cmml">⁢</mo><mi id="S4.E2.m1.1.1.1.1.1.3.3" xref="S4.E2.m1.1.1.1.1.1.3.3.cmml">c</mi><mo id="S4.E2.m1.1.1.1.1.1.3.1a" xref="S4.E2.m1.1.1.1.1.1.3.1.cmml">⁢</mo><mi id="S4.E2.m1.1.1.1.1.1.3.4" xref="S4.E2.m1.1.1.1.1.1.3.4.cmml">a</mi></mrow></msup><mo id="S4.E2.m1.2.2.2.2.4" xref="S4.E2.m1.2.2.2.3.cmml">,</mo><msup id="S4.E2.m1.2.2.2.2.2" xref="S4.E2.m1.2.2.2.2.2.cmml"><mi id="S4.E2.m1.2.2.2.2.2.2" xref="S4.E2.m1.2.2.2.2.2.2.cmml">h</mi><mi id="S4.E2.m1.2.2.2.2.2.3" xref="S4.E2.m1.2.2.2.2.2.3.cmml">r</mi></msup><mo stretchy="false" id="S4.E2.m1.2.2.2.2.5" xref="S4.E2.m1.2.2.2.3.cmml">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content" id="S4.E2.m1.2b"><apply id="S4.E2.m1.2.2.cmml" xref="S4.E2.m1.2.2"><times id="S4.E2.m1.2.2.3.cmml" xref="S4.E2.m1.2.2.3"></times><ci id="S4.E2.m1.2.2.4a.cmml" xref="S4.E2.m1.2.2.4"><mtext id="S4.E2.m1.2.2.4.cmml" xref="S4.E2.m1.2.2.4">Correlation</mtext></ci><interval closure="open" id="S4.E2.m1.2.2.2.3.cmml" xref="S4.E2.m1.2.2.2.2"><apply id="S4.E2.m1.1.1.1.1.1.cmml" xref="S4.E2.m1.1.1.1.1.1"><csymbol cd="ambiguous" id="S4.E2.m1.1.1.1.1.1.1.cmml" xref="S4.E2.m1.1.1.1.1.1">superscript</csymbol><ci id="S4.E2.m1.1.1.1.1.1.2.cmml" xref="S4.E2.m1.1.1.1.1.1.2">ℎ</ci><apply id="S4.E2.m1.1.1.1.1.1.3.cmml" xref="S4.E2.m1.1.1.1.1.1.3"><times id="S4.E2.m1.1.1.1.1.1.3.1.cmml" xref="S4.E2.m1.1.1.1.1.1.3.1"></times><ci id="S4.E2.m1.1.1.1.1.1.3.2.cmml" xref="S4.E2.m1.1.1.1.1.1.3.2">𝑝</ci><ci id="S4.E2.m1.1.1.1.1.1.3.3.cmml" xref="S4.E2.m1.1.1.1.1.1.3.3">𝑐</ci><ci id="S4.E2.m1.1.1.1.1.1.3.4.cmml" xref="S4.E2.m1.1.1.1.1.1.3.4">𝑎</ci></apply></apply><apply id="S4.E2.m1.2.2.2.2.2.cmml" xref="S4.E2.m1.2.2.2.2.2"><csymbol cd="ambiguous" id="S4.E2.m1.2.2.2.2.2.1.cmml" xref="S4.E2.m1.2.2.2.2.2">superscript</csymbol><ci id="S4.E2.m1.2.2.2.2.2.2.cmml" xref="S4.E2.m1.2.2.2.2.2.2">ℎ</ci><ci id="S4.E2.m1.2.2.2.2.2.3.cmml" xref="S4.E2.m1.2.2.2.2.2.3">𝑟</ci></apply></interval></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.E2.m1.2c">\displaystyle\text{Correlation}(h^{pca},h^{r})</annotation><annotation encoding="application/x-llamapun" id="S4.E2.m1.2d">Correlation
+ ( italic_h start_POSTSUPERSCRIPT italic_p italic_c italic_a 
+end_POSTSUPERSCRIPT , italic_h start_POSTSUPERSCRIPT italic_r 
+end_POSTSUPERSCRIPT )</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S4.E2.m2.3" class="ltx_Math" alttext="\displaystyle=f.\text{train}(h^{pca},h^{r}).\text{coef\_}" display="inline"><semantics id="S4.E2.m2.3a"><mrow id="S4.E2.m2.3.3.2" xref="S4.E2.m2.3.3.3.cmml"><mrow id="S4.E2.m2.2.2.1.1" xref="S4.E2.m2.2.2.1.1.cmml"><mi id="S4.E2.m2.2.2.1.1.2" xref="S4.E2.m2.2.2.1.1.2.cmml"></mi><mo id="S4.E2.m2.2.2.1.1.1" xref="S4.E2.m2.2.2.1.1.1.cmml">=</mo><mi id="S4.E2.m2.2.2.1.1.3" xref="S4.E2.m2.2.2.1.1.3.cmml">f</mi></mrow><mo lspace="0em" rspace="0.167em" id="S4.E2.m2.3.3.2.3" xref="S4.E2.m2.3.3.3a.cmml">.</mo><mrow id="S4.E2.m2.3.3.2.2" xref="S4.E2.m2.3.3.2.2.cmml"><mtext id="S4.E2.m2.3.3.2.2.4" xref="S4.E2.m2.3.3.2.2.4a.cmml">train</mtext><mo id="S4.E2.m2.3.3.2.2.3" xref="S4.E2.m2.3.3.2.2.3.cmml">⁢</mo><mrow id="S4.E2.m2.3.3.2.2.2.2" xref="S4.E2.m2.3.3.2.2.2.3.cmml"><mo stretchy="false" id="S4.E2.m2.3.3.2.2.2.2.3" xref="S4.E2.m2.3.3.2.2.2.3.cmml">(</mo><msup id="S4.E2.m2.3.3.2.2.1.1.1" xref="S4.E2.m2.3.3.2.2.1.1.1.cmml"><mi id="S4.E2.m2.3.3.2.2.1.1.1.2" xref="S4.E2.m2.3.3.2.2.1.1.1.2.cmml">h</mi><mrow id="S4.E2.m2.3.3.2.2.1.1.1.3" xref="S4.E2.m2.3.3.2.2.1.1.1.3.cmml"><mi id="S4.E2.m2.3.3.2.2.1.1.1.3.2" xref="S4.E2.m2.3.3.2.2.1.1.1.3.2.cmml">p</mi><mo id="S4.E2.m2.3.3.2.2.1.1.1.3.1" xref="S4.E2.m2.3.3.2.2.1.1.1.3.1.cmml">⁢</mo><mi id="S4.E2.m2.3.3.2.2.1.1.1.3.3" xref="S4.E2.m2.3.3.2.2.1.1.1.3.3.cmml">c</mi><mo id="S4.E2.m2.3.3.2.2.1.1.1.3.1a" xref="S4.E2.m2.3.3.2.2.1.1.1.3.1.cmml">⁢</mo><mi id="S4.E2.m2.3.3.2.2.1.1.1.3.4" xref="S4.E2.m2.3.3.2.2.1.1.1.3.4.cmml">a</mi></mrow></msup><mo id="S4.E2.m2.3.3.2.2.2.2.4" xref="S4.E2.m2.3.3.2.2.2.3.cmml">,</mo><msup id="S4.E2.m2.3.3.2.2.2.2.2" xref="S4.E2.m2.3.3.2.2.2.2.2.cmml"><mi id="S4.E2.m2.3.3.2.2.2.2.2.2" xref="S4.E2.m2.3.3.2.2.2.2.2.2.cmml">h</mi><mi id="S4.E2.m2.3.3.2.2.2.2.2.3" xref="S4.E2.m2.3.3.2.2.2.2.2.3.cmml">r</mi></msup><mo stretchy="false" id="S4.E2.m2.3.3.2.2.2.2.5" xref="S4.E2.m2.3.3.2.2.2.3.cmml">)</mo></mrow></mrow><mo lspace="0em" rspace="0.167em" id="S4.E2.m2.3.3.2.4" xref="S4.E2.m2.3.3.3a.cmml">.</mo><mtext id="S4.E2.m2.1.1" xref="S4.E2.m2.1.1a.cmml">coef_</mtext></mrow><annotation-xml encoding="MathML-Content" id="S4.E2.m2.3b"><apply id="S4.E2.m2.3.3.3.cmml" xref="S4.E2.m2.3.3.2"><csymbol cd="ambiguous" id="S4.E2.m2.3.3.3a.cmml" xref="S4.E2.m2.3.3.2.3">formulae-sequence</csymbol><apply id="S4.E2.m2.2.2.1.1.cmml" xref="S4.E2.m2.2.2.1.1"><eq id="S4.E2.m2.2.2.1.1.1.cmml" xref="S4.E2.m2.2.2.1.1.1"></eq><csymbol cd="latexml" id="S4.E2.m2.2.2.1.1.2.cmml" xref="S4.E2.m2.2.2.1.1.2">absent</csymbol><ci id="S4.E2.m2.2.2.1.1.3.cmml" xref="S4.E2.m2.2.2.1.1.3">𝑓</ci></apply><apply id="S4.E2.m2.3.3.2.2.cmml" xref="S4.E2.m2.3.3.2.2"><times id="S4.E2.m2.3.3.2.2.3.cmml" xref="S4.E2.m2.3.3.2.2.3"></times><ci id="S4.E2.m2.3.3.2.2.4a.cmml" xref="S4.E2.m2.3.3.2.2.4"><mtext id="S4.E2.m2.3.3.2.2.4.cmml" xref="S4.E2.m2.3.3.2.2.4">train</mtext></ci><interval closure="open" id="S4.E2.m2.3.3.2.2.2.3.cmml" xref="S4.E2.m2.3.3.2.2.2.2"><apply id="S4.E2.m2.3.3.2.2.1.1.1.cmml" xref="S4.E2.m2.3.3.2.2.1.1.1"><csymbol cd="ambiguous" id="S4.E2.m2.3.3.2.2.1.1.1.1.cmml" xref="S4.E2.m2.3.3.2.2.1.1.1">superscript</csymbol><ci id="S4.E2.m2.3.3.2.2.1.1.1.2.cmml" xref="S4.E2.m2.3.3.2.2.1.1.1.2">ℎ</ci><apply id="S4.E2.m2.3.3.2.2.1.1.1.3.cmml" xref="S4.E2.m2.3.3.2.2.1.1.1.3"><times id="S4.E2.m2.3.3.2.2.1.1.1.3.1.cmml" xref="S4.E2.m2.3.3.2.2.1.1.1.3.1"></times><ci id="S4.E2.m2.3.3.2.2.1.1.1.3.2.cmml" xref="S4.E2.m2.3.3.2.2.1.1.1.3.2">𝑝</ci><ci id="S4.E2.m2.3.3.2.2.1.1.1.3.3.cmml" xref="S4.E2.m2.3.3.2.2.1.1.1.3.3">𝑐</ci><ci id="S4.E2.m2.3.3.2.2.1.1.1.3.4.cmml" xref="S4.E2.m2.3.3.2.2.1.1.1.3.4">𝑎</ci></apply></apply><apply id="S4.E2.m2.3.3.2.2.2.2.2.cmml" xref="S4.E2.m2.3.3.2.2.2.2.2"><csymbol cd="ambiguous" id="S4.E2.m2.3.3.2.2.2.2.2.1.cmml" xref="S4.E2.m2.3.3.2.2.2.2.2">superscript</csymbol><ci id="S4.E2.m2.3.3.2.2.2.2.2.2.cmml" xref="S4.E2.m2.3.3.2.2.2.2.2.2">ℎ</ci><ci id="S4.E2.m2.3.3.2.2.2.2.2.3.cmml" xref="S4.E2.m2.3.3.2.2.2.2.2.3">𝑟</ci></apply></interval></apply><ci id="S4.E2.m2.1.1a.cmml" xref="S4.E2.m2.1.1"><mtext id="S4.E2.m2.1.1.cmml" xref="S4.E2.m2.1.1">coef_</mtext></ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.E2.m2.3c">\displaystyle=f.\text{train}(h^{pca},h^{r}).\text{coef\_}</annotation><annotation encoding="application/x-llamapun" id="S4.E2.m2.3d">=
+ italic_f . train ( italic_h start_POSTSUPERSCRIPT italic_p italic_c 
+italic_a end_POSTSUPERSCRIPT , italic_h start_POSTSUPERSCRIPT italic_r 
+end_POSTSUPERSCRIPT ) . coef_</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2)</span></td>
+</tr></tbody>
+</table>
+</div>
+<figure id="S4.F1" class="ltx_figure"><img src="arxiv_files/x1.png" id="S4.F1.g1" class="ltx_graphics ltx_centering ltx_img_landscape" width="830" height="539" alt="Refer to caption">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 1: </span>The
+ workflow of our pipeline consists of initial pretraining of a TCL model
+ using sensor data and self-supervised learning (SSL). This process 
+yields three types of embedding: one from TCL, another from source 
+reconstruction (serving as our target source), and a third from PCA 
+(used as our baseline). Subsequently, we train two linear regression 
+models to learn the source reconstruction embedding from both PCA and 
+TCL, and their respective coefficients are reported.</figcaption>
+</figure><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</section>
+</section>
+<section id="S5" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">5 </span>Results</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<section id="S5.SS1" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">5.1 </span>Simulated Data Analysis</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<figure id="S5.F2" class="ltx_figure"><img src="arxiv_files/x2.png" id="S5.F2.g1" class="ltx_graphics ltx_centering ltx_img_landscape" width="830" height="393" alt="Refer to caption">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 2: </span>Comparison
+ between our TCL model and the reported results on simulated data. It 
+shows the mean classification accuracies of the MLR in TCL, plotted 
+against the number of layers and segments. (Accuracies are based on 
+training data, as the definition of test data is not explicitly 
+specified.) It’s worth noting that the results from the paper (indicated
+ by dotted lines) were roughly estimated from Figure 2 in the original 
+paper, as exact numerical values were not provided. While there are some
+ discrepancies between our implementation and the reported results, 
+particularly in settings with fewer layers, a similar pattern is 
+observed across both models.</figcaption>
+</figure><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div id="S5.SS1.p1" class="ltx_para ltx_noindent">
+<p id="S5.SS1.p1.1" class="ltx_p">Figure <a href="#S5.F2" title="Figure 2 ‣ 5.1 Simulated Data Analysis ‣ 5 Results ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2</span></a>
+ compares the performance of our version of the TCL model and the 
+reported results in the paper. While the exact numbers may not align, a 
+similar pattern can be observed. It’s evident that as the number of 
+layers increases (indicating stronger nonlinearity in the mixing-MLP), 
+training the feature-MLP and the MLR becomes more challenging. Moreover,
+ the classification accuracy decreases with an increase in the number of
+ segments. This decline occurs because, with a greater number of 
+classes, some of them will inevitably have very similar distributions 
+and are thus difficult to discriminate; this is why we computed the 
+chance level as above.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section id="S5.SS2" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">5.2 </span>EEG Data Analysis</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S5.SS2.p1" class="ltx_para ltx_noindent">
+<p id="S5.SS2.p1.1" class="ltx_p">We observe two separate patterns in 
+the component generated by PCA and TCL. In PCA, we observed a 
+coefficient matrix that would converge to a permutation pattern, whereas
+ in TCL, as we increase the number of patients in the training set, we 
+observe that the coefficients appear slightly more sparse (Figure <a href="#S5.F3" title="Figure 3 ‣ 5.2 EEG Data Analysis ‣ 5 Results ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3</span></a>).
+ However, within the scale of the datasets we had for this project, the 
+learning curves are not much affected by the size of dataset.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<figure id="S5.F3" class="ltx_figure">
+<table id="S5.F3.6" class="ltx_tabular ltx_centering ltx_align_middle">
+<tbody class="ltx_tbody">
+<tr id="S5.F3.3.3" class="ltx_tr">
+<td id="S5.F3.1.1.1" class="ltx_td ltx_align_center"><img src="arxiv_files/x3.png" id="S5.F3.1.1.1.g1" class="ltx_graphics ltx_img_landscape" width="249" height="187" alt="Refer to caption"></td>
+<td id="S5.F3.2.2.2" class="ltx_td ltx_align_center"><img src="arxiv_files/x4.png" id="S5.F3.2.2.2.g1" class="ltx_graphics ltx_img_landscape" width="249" height="187" alt="Refer to caption"></td>
+<td id="S5.F3.3.3.3" class="ltx_td ltx_align_center"><img src="arxiv_files/x5.png" id="S5.F3.3.3.3.g1" class="ltx_graphics ltx_img_landscape" width="249" height="187" alt="Refer to caption"></td>
+</tr>
+<tr id="S5.F3.6.6" class="ltx_tr">
+<td id="S5.F3.4.4.1" class="ltx_td ltx_align_center"><img src="arxiv_files/x6.png" id="S5.F3.4.4.1.g1" class="ltx_graphics ltx_img_landscape" width="249" height="187" alt="Refer to caption"></td>
+<td id="S5.F3.5.5.2" class="ltx_td ltx_align_center"><img src="arxiv_files/x7.png" id="S5.F3.5.5.2.g1" class="ltx_graphics ltx_img_landscape" width="249" height="187" alt="Refer to caption"></td>
+<td id="S5.F3.6.6.3" class="ltx_td ltx_align_center"><img src="arxiv_files/x8.png" id="S5.F3.6.6.3.g1" class="ltx_graphics ltx_img_landscape" width="249" height="187" alt="Refer to caption"></td>
+</tr>
+</tbody>
+</table>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 3: </span>Regression
+ correlation coefficients between components of PCA (top row) and TCL 
+(bottom row) for different numbers of patients in the training set: 4 
+(left), 10 (center), and 25 (right).</figcaption>
+</figure><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div id="S5.SS2.p2" class="ltx_para ltx_noindent">
+<p id="S5.SS2.p2.1" class="ltx_p">One can compare this result with the comparison of PCA and TCA on simulated data in Figure <a href="#S7.F5" title="Figure 5 ‣ 7 Appendix ‣ Time-Contrastive Unsupervised Representation Learning for EEG Data" class="ltx_ref"><span class="ltx_text ltx_ref_tag">5</span></a> and observe that this pattern might be inherent to the algorithm.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+</section>
+<section id="S6" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">6 </span>Conclusion and Future Work</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S6.p1" class="ltx_para ltx_noindent">
+<p id="S6.p1.1" class="ltx_p">A significant limitation of TCL is the assumption that the number of sources (<span id="S6.p1.1.1" class="ltx_text ltx_font_italic">num_sources</span>)
+ should be predefined. In practical applications, we may not know the 
+exact number of sources involved, and our access is limited to the 
+number of channels provided by the sensors we use. This assumption may 
+not hold true in real-world scenarios. For instance, if there are more 
+than 116 channels, which corresponds to the number of parcels, the 
+additional channels will be disregarded. This discrepancy between the 
+number of sources and channels is a critical aspect to consider for 
+future improvements in TCL.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S6.p2" class="ltx_para ltx_noindent">
+<p id="S6.p2.1" class="ltx_p">We initially took inspiration from the 
+follow-up works of the authors of the seminal paper on TCL, and we are 
+interested in exploring the potential of TCL in the context of EEG data.
+ We have successfully implemented the model and trained it on both 
+simulated and real EEG data. Our results show that the model can learn a
+ disentangled representation of the data, which can be used for further 
+analysis.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S6.p3" class="ltx_para ltx_noindent">
+<p id="S6.p3.1" class="ltx_p">A meaningful experiment on this result is 
+to see if the learned representation can be used to predict the labels 
+given from the lab (e.g., pathologies, the age of the participant, the 
+task they were performing, eyes being open or closed, etc.) as a 
+classification task.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S6.p4" class="ltx_para ltx_noindent">
+<p id="S6.p4.1" class="ltx_p">Time Contrastive Learning is a promising 
+causal representation learning method as it is one of the rare machine 
+learning methods that explicitly account for the temporal dependence of 
+the data and relax the i.i.d.&nbsp;assumption. This is particularly 
+important in the context of EEG data, where the temporal structure of 
+the data is crucial. Additionally, the model is capable of learning a 
+nonlinear representation of the data, important for capturing the 
+complex dynamics of the brain. However, it’s important to note the 
+limitations: while the model has been used in the literature for MEG 
+data, the assumption of statistical independence of the sources may not 
+hold for all neuroimaging data.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S6.p5" class="ltx_para ltx_noindent">
+<p id="S6.p5.1" class="ltx_p">We believe that this method, if further 
+improved and shown to produce invariant representations across different
+ modalities such as fMRI, MEG, and ECoG data, could have significant 
+implications for neuroscience. This becomes particularly important when 
+we consider the difficulties of computing the source reconstruction of 
+EEG and MEG data, which is nontrivial to verify and validate.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section id="S7" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">7 </span>Appendix</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S7.p1" class="ltx_para ltx_noindent">
+<p id="S7.p1.1" class="ltx_p">For the given recordings, the MNE object 
+(a Python library for processing electrophysiological data) contained 
+the following information:</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S7.p2" class="ltx_para ltx_minipage ltx_align_middle" style="width:216.8pt;">
+<pre id="S7.p2.1" class="ltx_verbatim ltx_font_typewriter">&lt;Info | 12 non-empty values
+bads: 1 items (E92)
+ch_names: E1, E2, E3, E4, E5, E6, E7, E8, E9, E10, E11, E12, E13, E14, ...
+chs: 128 EEG
+custom_ref_applied: True
+dig: 131 items (3 Cardinal, 128 EEG)
+file_id: 4 items (dict)
+highpass: 0.1 Hz
+lowpass: 48.0 Hz
+meas_date: unspecified
+meas_id: 4 items (dict)
+nchan: 128
+sfreq: 500.0 Hz
+</pre>
+</div>
+<figure id="S7.F5" class="ltx_figure">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_2">
+<figure id="S7.F5.2" class="ltx_figure ltx_figure_panel ltx_minipage ltx_align_bottom" style="width:195.1pt;">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_1"><img src="arxiv_files/x9.png" id="S7.F5.1.g1" class="ltx_graphics ltx_figure_panel ltx_img_landscape" width="830" height="622" alt="Refer to caption"></div>
+<div class="ltx_flex_break"></div>
+<div class="ltx_flex_cell ltx_flex_size_1"><img src="arxiv_files/x10.png" id="S7.F5.2.g2" class="ltx_graphics ltx_centering ltx_figure_panel ltx_img_landscape" width="830" height="622" alt="Refer to caption"></div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 4: </span>Regression correlation coefficients between components of PCA and TCL for simulated data.</figcaption>
+</figure><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_flex_cell ltx_flex_size_2">
+<figure id="S7.F5.3" class="ltx_figure ltx_figure_panel ltx_minipage ltx_align_bottom" style="width:195.1pt;"><img src="arxiv_files/x11.png" id="S7.F5.3.g1" class="ltx_graphics ltx_img_square" width="830" height="996" alt="Refer to caption">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 5: </span>Learning curves for 5-layer neural network with 150 segments for different sizes of training set</figcaption>
+</figure><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</div>
+</figure><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<section id="S7.SS0.SSS1" class="ltx_subsubsection">
+<h4 class="ltx_title ltx_title_subsubsection">
+<span class="ltx_tag ltx_tag_subsubsection">7.0.1 </span>Parameters</h4><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S7.SS0.SSS1.p1" class="ltx_para ltx_noindent">
+<p id="S7.SS0.SSS1.p1.1" class="ltx_p">The script uses the following parameters:</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div id="S7.SS0.SSS1.p2" class="ltx_para ltx_noindent">
+<ul id="S7.I1" class="ltx_itemize">
+<li id="S7.I1.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i1.p1" class="ltx_para">
+<p id="S7.I1.i1.p1.1" class="ltx_p"><span id="S7.I1.i1.p1.1.1" class="ltx_text ltx_font_typewriter">random_seed</span>: Seed for random number generation. Set to 0.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i2.p1" class="ltx_para">
+<p id="S7.I1.i2.p1.1" class="ltx_p"><span id="S7.I1.i2.p1.1.1" class="ltx_text ltx_font_typewriter">num_comp</span>: Number of components (dimension). Set to 116.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i3.p1" class="ltx_para">
+<p id="S7.I1.i3.p1.1" class="ltx_p"><span id="S7.I1.i3.p1.1.1" class="ltx_text ltx_font_typewriter">num_segment</span>: Number of segments. Set to 150.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i4" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i4.p1" class="ltx_para">
+<p id="S7.I1.i4.p1.1" class="ltx_p"><span id="S7.I1.i4.p1.1.1" class="ltx_text ltx_font_typewriter">num_segmentdata</span>: Number of data-points in each segment. Set to 500.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i5" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i5.p1" class="ltx_para">
+<p id="S7.I1.i5.p1.1" class="ltx_p"><span id="S7.I1.i5.p1.1.1" class="ltx_text ltx_font_typewriter">num_layer</span>: Number of layers of mixing-MLP. Set to 5.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i6" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i6.p1" class="ltx_para">
+<p id="S7.I1.i6.p1.1" class="ltx_p"><span id="S7.I1.i6.p1.1.1" class="ltx_text ltx_font_typewriter">list_hidden_nodes</span>: List of the number of nodes of each hidden layer of feature-MLP. Set to [264, 264, 264, 264, 116].</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i7" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i7.p1" class="ltx_para">
+<p id="S7.I1.i7.p1.1" class="ltx_p"><span id="S7.I1.i7.p1.1.1" class="ltx_text ltx_font_typewriter">initial_learning_rate</span>: Initial learning rate. Set to 0.01.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i8" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i8.p1" class="ltx_para">
+<p id="S7.I1.i8.p1.1" class="ltx_p"><span id="S7.I1.i8.p1.1.1" class="ltx_text ltx_font_typewriter">momentum</span>: Momentum parameter of SGD. Set to 0.9.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i9" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i9.p1" class="ltx_para">
+<p id="S7.I1.i9.p1.1" class="ltx_p"><span id="S7.I1.i9.p1.1.1" class="ltx_text ltx_font_typewriter">max_steps</span>: Number of iterations (mini-batches). Set to 700,000.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i10" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i10.p1" class="ltx_para">
+<p id="S7.I1.i10.p1.1" class="ltx_p"><span id="S7.I1.i10.p1.1.1" class="ltx_text ltx_font_typewriter">batch_size</span>: Mini-batch size. Set to 500.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i11" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i11.p1" class="ltx_para">
+<p id="S7.I1.i11.p1.1" class="ltx_p"><span id="S7.I1.i11.p1.1.1" class="ltx_text ltx_font_typewriter">moving_average_decay</span>: Moving average decay of variables to be saved. Set to 0.999.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i12" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i12.p1" class="ltx_para">
+<p id="S7.I1.i12.p1.1" class="ltx_p"><span id="S7.I1.i12.p1.1.1" class="ltx_text ltx_font_typewriter">checkpoint_steps</span>: Interval to save checkpoint. Set to 100,000.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i13" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i13.p1" class="ltx_para">
+<p id="S7.I1.i13.p1.1" class="ltx_p"><span id="S7.I1.i13.p1.1.1" class="ltx_text ltx_font_typewriter">decay_steps_init</span>: Decay steps for initializing only MLR. Set to 50,000.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i14" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i14.p1" class="ltx_para">
+<p id="S7.I1.i14.p1.1" class="ltx_p"><span id="S7.I1.i14.p1.1.1" class="ltx_text ltx_font_typewriter">dir_path</span>: Directory path for saving experiment results. Set dynamically based on current time, number of layers, and number of segments.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i15" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i15.p1" class="ltx_para">
+<p id="S7.I1.i15.p1.1" class="ltx_p"><span id="S7.I1.i15.p1.1.1" class="ltx_text ltx_font_typewriter">train_dir</span>: Save directory. Set to <span id="S7.I1.i15.p1.1.2" class="ltx_text ltx_font_typewriter">dir_path</span>.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i16" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i16.p1" class="ltx_para">
+<p id="S7.I1.i16.p1.1" class="ltx_p"><span id="S7.I1.i16.p1.1.1" class="ltx_text ltx_font_typewriter">saveparmpath</span>: File name to save parameters. Set to <span id="S7.I1.i16.p1.1.2" class="ltx_text ltx_font_typewriter">parm.pkl</span> in <span id="S7.I1.i16.p1.1.3" class="ltx_text ltx_font_typewriter">train_dir</span>.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li id="S7.I1.i17" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="S7.I1.i17.p1" class="ltx_para ltx_noindent">
+<p id="S7.I1.i17.p1.1" class="ltx_p"><span id="S7.I1.i17.p1.1.1" class="ltx_text ltx_font_typewriter">start_time</span>: Start time of the experiment. Set to 5 for this report to eliminate the instrumental noise of EEG acquisition.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+</ul>
+</div>
+</section>
+<section id="S7.SS0.SSS2" class="ltx_subsubsection">
+<h4 class="ltx_title ltx_title_subsubsection">
+<span class="ltx_tag ltx_tag_subsubsection">7.0.2 </span>Execution</h4><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S7.SS0.SSS2.p1" class="ltx_para ltx_noindent">
+<p id="S7.SS0.SSS2.p1.1" class="ltx_p">To reproduce the results, run the script <span id="S7.SS0.SSS2.p1.1.1" class="ltx_text ltx_font_typewriter">tcl_training.py</span> in your Python environment. Make sure all the required packages are installed.
+Use <span id="S7.SS0.SSS2.p1.1.2" class="ltx_text ltx_font_typewriter">tcl_evaluation.py</span> for evaluation.
+The data available upon request. It may be released publicly after the publication of the paper.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section id="S7.SS0.SSS3" class="ltx_subsubsection">
+<h4 class="ltx_title ltx_title_subsubsection">
+<span class="ltx_tag ltx_tag_subsubsection">7.0.3 </span>Outputs</h4><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+
+<div id="S7.SS0.SSS3.p1" class="ltx_para ltx_noindent">
+<p id="S7.SS0.SSS3.p1.1" class="ltx_p">The script saves the training parameters and results in the specified directory. The parameters are saved in a file named <span id="S7.SS0.SSS3.p1.1.1" class="ltx_text ltx_font_typewriter">parm.pkl</span>.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+</section>
+</article>
+</div>
+
+</div>
+
+
+<button type="button" class="btn btn-primary hover-rp-button" id="openForm">Report Issue</button><div class="modal" id="myForm" role="dialog" aria-labelledby="modal-title"><div class="modal-dialog"><form class="modal-content" id="myFormContent" enctype="multipart/form-data"><div class="modal-header" id="modal-header"><h5 class="modal-title">Report Github Issue</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><div id="warningLabel" class="form-text">Warning:
+ Issue reports will be publicly available on Github, including 
+highlighted text. You may want to omit screenshots if you are reporting 
+on a paper still in submission.</div><label for="form_title" id="modalTitle">Title:</label><input class="form-control" id="form_title" name="form_title" required="required" placeholder="Enter title"><label for="description" id="selectedTextModalDescription" style="display: none;">Content selection saved. Describe the issue below:</label><label for="description" id="nomralModalDescription">Description:</label><textarea class="form-control" id="description" name="description" required="required" style="height: 80px;" maxlength="500" placeholder="500 characters maximum"></textarea></div><div class="modal-footer d-flex justify-content-end"><button type="submit" class="sr-only button" id="modal-submit-sr">Submit without Github</button><button type="submit" class="btn btn-primary" id="modal-submit">Submit in Github</button></div></form></div></div><button id="small-report-button" type="button" class="btn btn-secondary btn-sm" style="background-color: rgb(179, 27, 27); position: fixed; display: none;">Report Issue for Selection</button><div class="ltx_page_footer">
+        <div class="ltx_page_logo">
+            Generated by
+            <a href="https://math.nist.gov/~BMiller/LaTeXML/" class="ltx_LaTeXML_logo">
+                <span style="letter-spacing: -0.2em; margin-right: 0.1em;">
+                    L
+                    <span style="font-size: 70%; position: relative; bottom: 2.2pt;">A</span>
+                    T
+                    <span style="position: relative; bottom: -0.4ex;">E</span>
+                </span>
+                <span class="ltx_font_smallcaps">xml</span>
+                <img alt="[LOGO]" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==">
+            </a>
+        </div></div><footer id="footer" class="ltx_document">
+        <div class="keyboard-glossary">
+            <h2>Instructions for reporting errors</h2>
+            <p>We are continuing to improve HTML versions of papers, and
+ your feedback helps enhance accessibility and mobile support. To report
+ errors in the HTML that will help us improve conversion and rendering, 
+choose any of the methods listed below:</p>
+            <ul>
+                <li>Click the "Report Issue" button.</li>
+                <li>Open a report feedback form via keyboard, use "<strong>Ctrl + ?</strong>".</li>
+                <li>Make a text selection and click the "Report Issue for Selection" button near your cursor.</li>
+                <li class="sr-only">You can use Alt+Y to toggle on and Alt+Shift+Y to toggle off accessible reporting links at each section.</li>
+            </ul>
+            <p>Our team has already identified <a class="ltx_ref" href="https://github.com/arXiv/html_feedback/issues" target="_blank">the following issues</a>.
+ We appreciate your time reviewing and reporting rendering errors we may
+ not have found yet. Your efforts will help us improve the HTML versions
+ for all readers, because disability should not be a barrier to 
+accessing research. Thank you for your continued support in championing 
+open access for all.</p>
+            <p>Have a free development cycle? Help support accessibility at arXiv! Our collaborators at LaTeXML maintain a <a class="ltx_ref" href="https://github.com/brucemiller/LaTeXML/wiki/Porting-LaTeX-packages-for-LaTeXML" target="_blank">list of packages that need conversion</a>, and welcome <a class="ltx_ref" href="https://github.com/brucemiller/LaTeXML/issues" target="_blank">developer contributions</a>.</p>
+        </div>
+    </footer></body><style data-source="base" class="dblt-ykjmwcnxmi"><br>:root {<br>  --dark-background-light-text-add-on-foreground-color: #ffffff !important;<br>  --dark-background-light-text-add-on-background-color: #2b2b2b !important;<br>  --dark-background-light-text-add-on-link-color: #7fd7ff !important;<br>  --dark-background-light-text-add-on-visited-color: #ffafff !important;<br>  --dark-background-light-text-add-on-active-color: #ff0000 !important;<br>  --dark-background-light-text-add-on-selection-color: #8080ff !important;<br>}<br><br>html {<br>  background-color: #2b2b2b;<br>  color: #ffffff;<br>}<br><br>*:link,<br>*:link * {<br>  color: #7fd7ff !important;<br>}<br><br>*:visited,<br>*:visited * {<br>  color: #ffafff !important;<br>}<br><br>input[type="range"] {<br>  -moz-appearance: none;<br>}<br><br>button,<br>input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),<br>textarea,<br>select,<br>[contenteditable="true"] {<br>  -moz-appearance: none !important;<br>  color: #ffffff !important;<br>  background-color: #2b2b2b;<br>  border-radius: 4px;<br>  border-width: 1px;<br>  border-color: #ffffff;<br>  border-style: solid;<br>  transition-duration: 0.3s;<br>  transition-property: border-color, box-shadow;<br>}<br><br>input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="button"]):not([type="color"]):not([type="image"]):not([type="reset"]):not([type="submit"]),<br>textarea,<br>[contenteditable="true"] {<br>  background-image: none !important;<br>}<br><br>input:focus:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="button"]):not([type="color"]):not([type="image"]):not([type="reset"]):not([type="submit"]),<br>textarea:focus,<br>[contenteditable="true"]:focus {<br>  box-shadow: inset 0 0 0.15em 0.15em #8080ff !important;<br>  border-color: #8080ff !important;<br>}<br><br>button,<br>input[type="button"],<br>input[type="color"],<br>input[type="image"],<br>input[type="reset"],<br>input[type="submit"],<br>select {<br>  box-shadow: 0 0 0.15em 0.15em transparent !important;<br>}<br><br>button:focus,<br>input[type="button"]:focus,<br>input[type="color"]:focus,<br>input[type="image"]:focus,<br>input[type="reset"]:focus,<br>input[type="submit"]:focus,<br>select:focus {<br>  box-shadow: 0 0 0.15em 0.15em #8080ff !important;<br>  border-color: #8080ff !important;<br>}<br><br>select {<br>  background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><path stroke="%23ffffff" fill="transparent" stroke-width="40" d="M 100 175 L 250 350 L 400 175"/></svg>') !important;<br>  background-position: right center !important;<br>  background-repeat: no-repeat !important;<br>  padding-right: 1em !important;<br>  background-size: 1em !important;<br>}<br><br>*::-moz-selection {<br>  color: #ffffff !important;<br>  background: #8080ff !important;<br>  text-shadow:<br>    #2b2b2b 0 0 1pt,<br>    #2b2b2b 0 0 2pt,<br>    #2b2b2b 0 0 3pt,<br>    #2b2b2b 0 0 4pt,<br>    #2b2b2b 0 0 5pt,<br>    #2b2b2b 0 0 5pt,<br>    #2b2b2b 0 0 5pt !important;<br>}<br><br>img[alt="inline_formula"],<br>.mwe-math-fallback-image-inline,<br>.highcharts-container {<br>  filter: invert(1) hue-rotate(180deg) !important;<br>}<br>.catalog-content .i-checkbox__faux::before {<br>  filter: invert(1);<br>}<br>#gs_bdy .gsc_g_a[style*="height"] {<br>  background-color: rgb(119, 119, 119) !important;<br>}<br><br>.awradio label::after {<br>  background-color: #ffffff !important;<br>}<br>.jfk-button-img {<br>  filter: invert(1);<br>}<br><br>#kix-current-user-cursor-caret[style*="border-color: rgb(0, 0, 0)"] {<br>  border-color: #ffffff !important;<br>}<br></style><style data-source="stylesheet-processor" class="dblt-ykjmwcnxmi"><br>html {<br>  background-color: #2b2b2b !important;<br>  color: #ffffff !important;<br>}<br><br>[bgcolor] {<br>  background-color: #2b2b2b !important;<br>}<br>[text],<br>[color] {<br>  color: #ffffff !important;<br>}<br><br>[alink]:link:active {<br>  color: #ff0000 !important;<br>}<br>[vlink]:visited {<br>  color: #ffafff !important;<br>}<br>[link]:link {<br>  color: #7fd7ff !important;<br>}<br><br>.qrCode > canvas {<br>  border: 10px white solid;<br>}<br></style><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
