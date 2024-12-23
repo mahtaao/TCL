@@ -2,6 +2,8 @@
 
 To run EEg-TCL, please use the PyTorch scripts in 'tcl_pytorch' folder.
 
+For reproducing the results in the paper, please use the follow the setting in the appendix.
+
 Python (tensorflow) code to perform the simulation in the paper
 
 Hyvarinen, A., Morioka, H., Unsupervised Feature Extraction by Time-Contrastive Learning and Nonlinear ICA. In Advances in Neural Information Processing Systems (NIPS2016), pp. 3765–3773, 2016.
