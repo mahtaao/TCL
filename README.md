@@ -1,6 +1,6 @@
 # Time-Contrastive Learning (TCL)
 
-To run EEg-TCL, please use the PyTorch scripts in 'tcl_py' folder.
+To run EEg-TCL, please use the PyTorch scripts in 'tcl_pytorch' folder.
 
 Python (tensorflow) code to perform the simulation in the paper
 
